@@ -6,8 +6,13 @@
 using namespace TinyTensor;
 int main(){
   Tensor<float> tensor(3,12,12);
-  int a = (1U);
-  std::cout<<a<<std::endl;
+  //arma::fcube data(3,12,12);
+  //tensor.set_data(data);
+  std::cout<<tensor.channels()<<std::endl;
   std::cout<<tensor.cols()<<std::endl;
+  std::cout<<tensor.rows()<<std::endl;
+  
+  std::cout<<tensor.empty()<<std::endl;
+  std::cout<<tensor.size()<<std::endl;
   return 0;
 }
