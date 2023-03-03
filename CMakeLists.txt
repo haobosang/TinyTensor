@@ -17,5 +17,5 @@ target_include_directories(MyTinyTensor PUBLIC /usr/include/armadillo_bits)
 target_include_directories(MyTinyTensor PUBLIC ${GTEST_INCLUDE_DIRS})
 target_link_libraries(MyTinyTensor ${link_lib} ${link_math_lib})
 
-#enable_testing()
+enable_testing()
 add_subdirectory(test)
