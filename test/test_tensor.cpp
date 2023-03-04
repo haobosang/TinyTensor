@@ -1,4 +1,5 @@
 #include "data/Tensor.hpp"
+#include "data/load_data.hpp"
 #include<memory>
 #include<gtest/gtest.h>
 #include<armadillo>
@@ -74,27 +75,52 @@ using namespace TinyTensor;
 // }
 
 int main(){
+  const std::string &file_path = "../tmp/data2.csv";
+  std::vector<std::string> headers;
+  std::shared_ptr<Tensor<float>> data = CSVDataLoader::LoadDataWithHeader(file_path, headers, ',');
 
-  Tensor<float> tensor(3, 3, 3);
-  std::cout<< tensor.channels();
-  std::cout<< tensor.rows();
-  std::cout<< tensor.cols();
+  uint32_t index = 1;
+  uint32_t rows = data->rows();
+  uint32_t cols = data->cols();
+  //LOG(INFO) << "\n" << data;
+  CHECK(rows==3);
+  CHECK(cols==3);
+  CHECK(headers.size()==3);
 
-  std::vector<float> values;
-  for (int i = 0; i < 27; ++i) {
-    values.push_back((float) i);
-  }
-  tensor.Fill(values);
-  std::cout<<  tensor.data();
-
-  int index = 0;
-  for (int c = 0; c < tensor.channels(); ++c) {
-    for (int r = 0; r < tensor.rows(); ++r) {
-      for (int c_ = 0; c_ < tensor.cols(); ++c_) {
-        std::cout<< tensor.at(c, r, c_);
-        index += 1;
-      }
+  std::cout<<headers.at(0);
+  std::cout<<headers.at(1);
+  std::cout<<headers.at(2);
+  putchar(10);
+  for (uint32_t r = 0; r < rows; ++r) {
+    for (uint32_t c = 0; c < cols; ++c) {
+      std::cout<<data->at(0, r, c)<<" ";
+      index += 1;
     }
+    putchar(10);
   }
-  std::cout<< "Test1 passed!";
+  // Tensor<float> tensor(3, 3, 3);
+  // std::cout<< tensor.channels();
+  // std::cout<< tensor.rows();
+  // std::cout<< tensor.cols();
+  // for(auto it:tensor.shapes()){
+  //   std::cout<<it<<" ";
+  // }
+
+  // std::vector<float> values;
+  // for (int i = 0; i < 27; ++i) {
+  //   values.push_back((float) i);
+  // }
+  // tensor.Fill(values);
+  // std::cout<<  tensor.data();
+
+  // int index = 0;
+  // for (int c = 0; c < tensor.channels(); ++c) {
+  //   for (int r = 0; r < tensor.rows(); ++r) {
+  //     for (int c_ = 0; c_ < tensor.cols(); ++c_) {
+  //       std::cout<< tensor.at(c, r, c_);
+  //       index += 1;
+  //     }
+  //   }
+  // }
+  // std::cout<< "Test1 passed!";
 }
