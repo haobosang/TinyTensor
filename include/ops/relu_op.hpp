@@ -9,6 +9,7 @@ class ReluOperaor : public Operator
 private:
     /* data */
     float thresh_ = 0.f;
+
 public:
     ~ReluOperaor() override = default;
 
