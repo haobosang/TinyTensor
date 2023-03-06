@@ -1,6 +1,6 @@
 #ifndef TINYTENSOR_INCLUDE_OPS_RELU_OP_HPP_
 #define TINYTENSOR_INCLUDE_OPS_RELU_OP_HPP_
-#include "ops/op.hpp"
+#include "op.hpp"
 
 namespace TinyTensor{
 
