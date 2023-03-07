@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-06 10:04:56
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-07 09:40:17
+ * @LastEditTime: 2023-03-07 11:06:03
  * @Description: 请填写简介
  */
 #ifndef TINYTENSOR_INCLUDE_RELU_LAYER_HPP_
@@ -18,7 +18,7 @@ private:
 
     std::shared_ptr<ReluOperaor> _op;
 public:
-    explicit ReluLayer(const std::shared_ptr<ReluOperaor> &op);
+    explicit ReluLayer(const std::shared_ptr<Operator> &op);
     
     ~ReluLayer() override = default;
 

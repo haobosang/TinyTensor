@@ -1,3 +1,10 @@
+/*
+ * @Author: lihaobo
+ * @Date: 2023-02-28 14:03:59
+ * @LastEditors: lihaobo
+ * @LastEditTime: 2023-03-07 20:23:31
+ * @Description: 请填写简介
+ */
 #ifndef TINYTENSOR_INCLUDE_TENSOR_HPP_
 #define TINYTENSOR_INCLUDE_TENSOR_HPP_
 
@@ -36,6 +43,7 @@ public:
 
 
     float index(uint32_t offset) const;
+    float& index(uint32_t offset);
 
     std::vector<uint32_t> shapes() const;
 

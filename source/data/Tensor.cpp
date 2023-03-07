@@ -56,6 +56,10 @@ float Tensor<float>::index(uint32_t offset) const{
     return this->data_.at(offset);
 
 }
+float& Tensor<float>::index(uint32_t offset)  {
+  CHECK(offset < this->data_.size());
+  return this->data_.at(offset);
+}
 //shapes目前有BUG，传引用返回数组更快
 std::vector<uint32_t> Tensor<float>::shapes() const{
     CHECK(!this->data_.empty());
