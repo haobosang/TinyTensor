@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-06 10:07:41
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-07 20:33:03
+ * @LastEditTime: 2023-03-09 13:48:05
  * @Description: 请填写简介
  */
 #include <glog/logging.h>
@@ -58,6 +58,12 @@ void ReluLayer::Forwards(const std::vector<std::shared_ptr<Tensor<float>>> &inpu
                                 
                                 
 }
+std::shared_ptr<Layer> ReluLayer::CreateInstance(const std::shared_ptr<Operator> &op){
+    std::shared_ptr<Layer> relu_layer = std::make_shared<ReluLayer>(op);
+    return relu_layer;
+    
+}
+LayerRegistererWrapper KReluLayer(OpType::kOperatorRelu, ReluLayer::CreateInstance);
 
 
 

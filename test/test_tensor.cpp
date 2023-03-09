@@ -81,6 +81,7 @@ int main(){
   float thresh = 0.f;
   // 初始化一个relu operator 并设置属性
   std::shared_ptr<Operator> relu_op = std::make_shared<ReluOperaor>(thresh);
+  std::shared_ptr<Layer> relu_layer = LayerRegisterer::CreateLayer(relu_op);
 
   // 有三个值的一个tensor<float>
   std::shared_ptr<Tensor<float>> input = std::make_shared<Tensor<float>>(1, 1, 3);
@@ -103,9 +104,10 @@ int main(){
     std::cout<<inputs.at(i)->index(1)<<std::endl;
     std::cout<<inputs.at(i)->index(2)<<std::endl;
   }
-  ReluLayer layer(relu_op);
+  //ReluLayer layer(relu_op);
 
-  layer.Forwards(inputs, outputs);
+  //layer.Forwards(inputs, outputs);
+  relu_layer->Forwards(inputs,outputs);
   std::cout<<outputs.size()<<std::endl; //1
 
   for (int i = 0; i < outputs.size(); ++i) {

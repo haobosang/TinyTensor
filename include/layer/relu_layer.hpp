@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-06 10:04:56
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-07 11:06:03
+ * @LastEditTime: 2023-03-09 13:45:16
  * @Description: 请填写简介
  */
 #ifndef TINYTENSOR_INCLUDE_RELU_LAYER_HPP_
@@ -25,7 +25,7 @@ public:
     void Forwards(const std::vector<std::shared_ptr<Tensor<float>>> &inputs,
                                 std::vector<std::shared_ptr<Tensor<float>>> &outputs) override;
 
-
+    static std::shared_ptr<Layer> CreateInstance(const std::shared_ptr<Operator> &op);
 };
 
     
