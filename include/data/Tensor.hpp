@@ -73,7 +73,7 @@ public:
 
     void Flatten();
 
-
+    std::shared_ptr<Tensor<float>> Clone();
 private:
     arma::fcube data_;
     std::vector<uint32_t> raw_shapes_;

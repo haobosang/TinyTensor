@@ -193,4 +193,8 @@ void Tensor<float>::Show(){
     }
 }
 
+std::shared_ptr<Tensor<float>> Tensor<float>::Clone(){
+    return std::make_shared<Tensor>(*this);
+}
+
 }

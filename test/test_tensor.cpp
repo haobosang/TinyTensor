@@ -5,8 +5,8 @@
 //#include<armadillo>
 #include<glog/logging.h>
 #include "data/Tensor.hpp"
-#include "ops/relu_op.hpp"
-#include "layer/relu_layer.hpp"
+#include "ops/sigmod_op.hpp"
+#include "layer/sigmod_layer.hpp"
 #include "factory/layer_factory.hpp"
 using namespace TinyTensor;
 // int main(){
@@ -80,13 +80,13 @@ using namespace TinyTensor;
 int main(){
   float thresh = 0.f;
   // 初始化一个relu operator 并设置属性
-  std::shared_ptr<Operator> relu_op = std::make_shared<ReluOperaor>(thresh);
-  std::shared_ptr<Layer> relu_layer = LayerRegisterer::CreateLayer(relu_op);
+  std::shared_ptr<Operator> sigmod_op = std::make_shared<SigmodOperaor>();
+  std::shared_ptr<Layer> sigmod_layer = LayerRegisterer::CreateLayer(sigmod_op);
 
   // 有三个值的一个tensor<float>
   std::shared_ptr<Tensor<float>> input = std::make_shared<Tensor<float>>(1, 1, 3);
   input->index(0) = -1.f; //output对应的应该是0
-  input->index(1) = -2; //output对应的应该是0
+  input->index(1) = -2.f; //output对应的应该是0
   input->index(2) = 3.f; //output对应的应该是3
   // // 主要第一个算子，经典又简单，我们这里开始！
   // input->index(0) = -1.f;
@@ -107,13 +107,17 @@ int main(){
   //ReluLayer layer(relu_op);
 
   //layer.Forwards(inputs, outputs);
-  relu_layer->Forwards(inputs,outputs);
+  sigmod_layer->Forwards(inputs,outputs);
   std::cout<<outputs.size()<<std::endl; //1
-
+  //std::cout<<input->index(0);
   for (int i = 0; i < outputs.size(); ++i) {
-    std::cout<<outputs.at(i)->index(0)<<std::endl;
-    std::cout<<outputs.at(i)->index(1)<<std::endl;
-    std::cout<<outputs.at(i)->index(2)<<std::endl;
+    std::cout<<outputs.at(i)->index(0)<<" "<<(1 / (1 + std::exp(-input->index(0))))<<std::endl;
+    
+
+    std::cout<<outputs.at(i)->index(1)<<" "<<(1 / (1 + std::exp(-input->index(1))))<<std::endl;
+    //std::cout<<(1 / (1 + std::exp(-input->index(1))));
+
+    std::cout<<outputs.at(i)->index(2)<<" "<<(1 / (1 + std::exp(-input->index(2))))<<std::endl;
   }
   // const std::string &file_path = "../tmp/data2.csv";
   // std::vector<std::string> headers;
