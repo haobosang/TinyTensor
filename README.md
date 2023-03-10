@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-02 10:12:49
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-08 09:59:52
+ * @LastEditTime: 2023-03-10 13:13:34
  * @Description: 请填写简介
 -->
 # TinyTensor
@@ -16,6 +16,6 @@
 * 单元测试：Google Test
 ## 目前已实现的算子
 - ReLU
-
+- Sigmod
 ## 致谢
 caffe
