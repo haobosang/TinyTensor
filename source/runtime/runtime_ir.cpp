@@ -8,7 +8,7 @@
 #include <utility>
 #include "factory/layer_factory.hpp"
 
-namespace kuiper_infer {
+namespace TinyTensor {
 RuntimeGraph::RuntimeGraph(std::string param_path, std::string bin_path)
     : param_path_(std::move(param_path)), bin_path_(std::move(bin_path)) {
 

@@ -8,7 +8,19 @@
 #include "ops/sigmod_op.hpp"
 #include "layer/sigmod_layer.hpp"
 #include "factory/layer_factory.hpp"
+#include "runtime/runtime_ir.hpp"
 using namespace TinyTensor;
+
+int main(){
+  const std::string &param_path = "./tmp/test.pnnx.param";
+  const std::string &bin_path = "./tmp/test.pnnx.bin";
+  RuntimeGraph graph(param_path, bin_path);
+  graph.Init();
+  const auto operators = graph.operators();
+  for (const auto &operator_ : operators) {
+    LOG(INFO) << "type: " << operator_->type << " name: " << operator_->name;
+  }
+}
 // int main(){
 //   Tensor<float> tensor(3, 32, 32);
 //   // ASSERT_EQ(tensor.channels(), 3);
@@ -77,48 +89,48 @@ using namespace TinyTensor;
 //   return 0;
 // }
 
-int main(){
-  float thresh = 0.f;
-  // 初始化一个relu operator 并设置属性
-  std::shared_ptr<Operator> sigmod_op = std::make_shared<SigmodOperaor>();
-  std::shared_ptr<Layer> sigmod_layer = LayerRegisterer::CreateLayer(sigmod_op);
+// int main(){
+//   float thresh = 0.f;
+//   // 初始化一个relu operator 并设置属性
+//   std::shared_ptr<Operator> sigmod_op = std::make_shared<SigmodOperaor>();
+//   std::shared_ptr<Layer> sigmod_layer = LayerRegisterer::CreateLayer(sigmod_op);
 
-  // 有三个值的一个tensor<float>
-  std::shared_ptr<Tensor<float>> input = std::make_shared<Tensor<float>>(1, 1, 3);
-  input->index(0) = -1.f; //output对应的应该是0
-  input->index(1) = -2.f; //output对应的应该是0
-  input->index(2) = 3.f; //output对应的应该是3
-  // // 主要第一个算子，经典又简单，我们这里开始！
-  // input->index(0) = -1.f;
-  // for (int i = 0; i < 1; ++i) {
-  //   std::cout<<input->index(0)<<std::endl;
-  //   std::cout<<input->index(1)<<std::endl;
-  //   std::cout<<input->index(2)<<std::endl;
-  // }
-  std::vector<std::shared_ptr<Tensor<float>>> inputs; //作为一个批次去处理
+//   // 有三个值的一个tensor<float>
+//   std::shared_ptr<Tensor<float>> input = std::make_shared<Tensor<float>>(1, 1, 3);
+//   input->index(0) = -1.f; //output对应的应该是0
+//   input->index(1) = -2.f; //output对应的应该是0
+//   input->index(2) = 3.f; //output对应的应该是3
+//   // // 主要第一个算子，经典又简单，我们这里开始！
+//   // input->index(0) = -1.f;
+//   // for (int i = 0; i < 1; ++i) {
+//   //   std::cout<<input->index(0)<<std::endl;
+//   //   std::cout<<input->index(1)<<std::endl;
+//   //   std::cout<<input->index(2)<<std::endl;
+//   // }
+//   std::vector<std::shared_ptr<Tensor<float>>> inputs; //作为一个批次去处理
 
-  std::vector<std::shared_ptr<Tensor<float>>> outputs; //放结果
-  inputs.push_back(input);
-  for (int i = 0; i < inputs.size(); ++i) {
-    std::cout<<inputs.at(i)->index(0)<<std::endl;
-    std::cout<<inputs.at(i)->index(1)<<std::endl;
-    std::cout<<inputs.at(i)->index(2)<<std::endl;
-  }
-  //ReluLayer layer(relu_op);
+//   std::vector<std::shared_ptr<Tensor<float>>> outputs; //放结果
+//   inputs.push_back(input);
+//   for (int i = 0; i < inputs.size(); ++i) {
+//     std::cout<<inputs.at(i)->index(0)<<std::endl;
+//     std::cout<<inputs.at(i)->index(1)<<std::endl;
+//     std::cout<<inputs.at(i)->index(2)<<std::endl;
+//   }
+//   //ReluLayer layer(relu_op);
 
-  //layer.Forwards(inputs, outputs);
-  sigmod_layer->Forwards(inputs,outputs);
-  std::cout<<outputs.size()<<std::endl; //1
-  //std::cout<<input->index(0);
-  for (int i = 0; i < outputs.size(); ++i) {
-    std::cout<<outputs.at(i)->index(0)<<" "<<(1 / (1 + std::exp(-input->index(0))))<<std::endl;
+//   //layer.Forwards(inputs, outputs);
+//   sigmod_layer->Forwards(inputs,outputs);
+//   std::cout<<outputs.size()<<std::endl; //1
+//   //std::cout<<input->index(0);
+//   for (int i = 0; i < outputs.size(); ++i) {
+//     std::cout<<outputs.at(i)->index(0)<<" "<<(1 / (1 + std::exp(-input->index(0))))<<std::endl;
     
 
-    std::cout<<outputs.at(i)->index(1)<<" "<<(1 / (1 + std::exp(-input->index(1))))<<std::endl;
-    //std::cout<<(1 / (1 + std::exp(-input->index(1))));
+//     std::cout<<outputs.at(i)->index(1)<<" "<<(1 / (1 + std::exp(-input->index(1))))<<std::endl;
+//     //std::cout<<(1 / (1 + std::exp(-input->index(1))));
 
-    std::cout<<outputs.at(i)->index(2)<<" "<<(1 / (1 + std::exp(-input->index(2))))<<std::endl;
-  }
+//     std::cout<<outputs.at(i)->index(2)<<" "<<(1 / (1 + std::exp(-input->index(2))))<<std::endl;
+//   }
   // const std::string &file_path = "../tmp/data2.csv";
   // std::vector<std::string> headers;
   // std::shared_ptr<Tensor<float>> data = CSVDataLoader::LoadDataWithHeader(file_path, headers, ',');

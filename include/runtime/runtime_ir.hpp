@@ -29,7 +29,7 @@
  // 转换成功！
 
 
-namespace kuiper_infer {
+namespace TinyTensor {
 /// 计算图结构，由多个计算节点和节点之间的数据流图组成
 class RuntimeGraph {
  public:

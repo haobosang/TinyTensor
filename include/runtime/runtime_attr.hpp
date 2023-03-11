@@ -1,15 +1,22 @@
+/*
+ * @Author: lihaobo
+ * @Date: 2023-03-11 13:46:39
+ * @LastEditors: lihaobo
+ * @LastEditTime: 2023-03-11 14:35:45
+ * @Description: 请填写简介
+ */
 //
 // Created by fss on 22-11-28.
 //
 
-#ifndef KUIPER_INFER_INCLUDE_PARSER_RUNTIME_ATTR_HPP_
-#define KUIPER_INFER_INCLUDE_PARSER_RUNTIME_ATTR_HPP_
+#ifndef TINYTENSOR_INFER_INCLUDE_PARSER_RUNTIME_ATTR_HPP_
+#define TINYTENSOR_INFER_INCLUDE_PARSER_RUNTIME_ATTR_HPP_
 #include <vector>
 #include <glog/logging.h>
 #include "status_code.hpp"
 #include "runtime_datatype.hpp"
 
-namespace kuiper_infer {
+namespace TinyTensor {
 
 /// 计算图节点的属性信息
 struct RuntimeAttribute {
@@ -51,4 +58,4 @@ std::vector<T> RuntimeAttribute::get() {
   return weights;
 }
 }
-#endif //KUIPER_INFER_INCLUDE_PARSER_RUNTIME_ATTR_HPP_
+#endif //TINYTENSOR_INFER_INCLUDE_PARSER_RUNTIME_ATTR_HPP_

@@ -1,10 +1,17 @@
+/*
+ * @Author: lihaobo
+ * @Date: 2023-03-11 13:47:45
+ * @LastEditors: lihaobo
+ * @LastEditTime: 2023-03-11 14:48:28
+ * @Description: 请填写简介
+ */
 //
 // Created by fss on 22-11-12.
 //
 
-#ifndef KUIPER_COURSE_INCLUDE_COMMON_HPP_
-#define KUIPER_COURSE_INCLUDE_COMMON_HPP_
-namespace kuiper_infer {
+#ifndef TINYTENSOR_INCLUDE_COMMON_HPP_
+#define TINYTENSOR_INCLUDE_COMMON_HPP_
+namespace TinyTensor {
 
 enum class RuntimeParameterType {
   kParameterUnknown = 0,
@@ -66,4 +73,4 @@ enum class ParseParameterAttrStatus {
   kParameterAttrParseSuccess = 0
 };
 }
-#endif //KUIPER_COURSE_INCLUDE_COMMON_HPP_
+#endif //TINYTENSOR_INCLUDE_COMMON_HPP_

@@ -1,17 +1,21 @@
-//
-// Created by fss on 22-11-28.
-//
+/*
+ * @Author: lihaobo
+ * @Date: 2023-03-11 13:46:55
+ * @LastEditors: lihaobo
+ * @LastEditTime: 2023-03-11 14:47:37
+ * @Description: 请填写简介
+ */
 
-#ifndef KUIPER_INFER_INCLUDE_PARSER_RUNTIME_OPERAND_HPP_
-#define KUIPER_INFER_INCLUDE_PARSER_RUNTIME_OPERAND_HPP_
+#ifndef TINYTENSOR_INFER_INCLUDE_PARSER_RUNTIME_OPERAND_HPP_
+#define TINYTENSOR_INFER_INCLUDE_PARSER_RUNTIME_OPERAND_HPP_
 #include <vector>
 #include <string>
 #include <memory>
 #include "status_code.hpp"
 #include "runtime_datatype.hpp"
-#include "data/tensor.hpp"
+#include "data/Tensor.hpp"
 
-namespace kuiper_infer {
+namespace TinyTensor {
 /// 计算节点输入输出的操作数
 struct RuntimeOperand {
   std::string name; /// 操作数的名称
@@ -20,4 +24,4 @@ struct RuntimeOperand {
   RuntimeDataType type = RuntimeDataType::kTypeUnknown; /// 操作数的类型，一般是float
 };
 }
-#endif //KUIPER_INFER_INCLUDE_PARSER_RUNTIME_OPERAND_HPP_
+#endif //TINYTENSOR_INFER_INCLUDE_PARSER_RUNTIME_OPERAND_HPP_

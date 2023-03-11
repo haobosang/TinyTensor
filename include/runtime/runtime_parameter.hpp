@@ -1,14 +1,21 @@
+/*
+ * @Author: lihaobo
+ * @Date: 2023-03-11 13:46:58
+ * @LastEditors: lihaobo
+ * @LastEditTime: 2023-03-11 14:47:55
+ * @Description: 请填写简介
+ */
 //
 // Created by fss on 22-11-28.
 //
 
-#ifndef KUIPER_INFER_INCLUDE_PARSER_RUNTIME_PARAMETER_HPP_
-#define KUIPER_INFER_INCLUDE_PARSER_RUNTIME_PARAMETER_HPP_
+#ifndef TINYETNSOR_INFER_INCLUDE_PARSER_RUNTIME_PARAMETER_HPP_
+#define TINYETNSOR_INFER_INCLUDE_PARSER_RUNTIME_PARAMETER_HPP_
 #include "status_code.hpp"
 #include <string>
 #include <vector>
 
-namespace kuiper_infer {
+namespace TinyTensor {
 /**
  * 计算节点中的参数信息，参数一共可以分为如下的几类
  * 1.int
@@ -77,4 +84,4 @@ struct RuntimeParameterBool : public RuntimeParameter {
   bool value = false;
 };
 }
-#endif //KUIPER_INFER_INCLUDE_PARSER_RUNTIME_PARAMETER_HPP_
+#endif //TINYETNSOR_INFER_INCLUDE_PARSER_RUNTIME_PARAMETER_HPP_

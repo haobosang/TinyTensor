@@ -1,8 +1,15 @@
+/*
+ * @Author: lihaobo
+ * @Date: 2023-03-11 13:46:51
+ * @LastEditors: lihaobo
+ * @LastEditTime: 2023-03-11 14:33:56
+ * @Description: 请填写简介
+ */
 //
 // Created by fss on 22-11-28.
 //
-#ifndef KUIPER_INFER_INCLUDE_PARSER_RUNTIME_OPERATOR_HPP_
-#define KUIPER_INFER_INCLUDE_PARSER_RUNTIME_OPERATOR_HPP_
+#ifndef TINYTENSOR_INFER_INCLUDE_PARSER_RUNTIME_OPERATOR_HPP_
+#define TINYTENSOR_INFER_INCLUDE_PARSER_RUNTIME_OPERATOR_HPP_
 
 #include <vector>
 #include <unordered_map>
@@ -14,7 +21,7 @@
 #include "runtime_attr.hpp"
 #include "runtime_parameter.hpp"
 
-namespace kuiper_infer {
+namespace TinyTensor {
 class Layer;
 
 /// 计算图中的计算节点
@@ -40,4 +47,4 @@ struct RuntimeOperator {
   std::map<std::string, std::shared_ptr<RuntimeAttribute> > attribute; /// 算子的属性信息，内含权重信息
 };
 }
-#endif //KUIPER_INFER_INCLUDE_PARSER_RUNTIME_OPERATOR_HPP_
+#endif //TINYTENSOR_INFER_INCLUDE_PARSER_RUNTIME_OPERATOR_HPP_

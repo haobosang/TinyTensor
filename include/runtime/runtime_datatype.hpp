@@ -1,8 +1,12 @@
-//
-// Created by fss on 22-12-23.
-//
-#ifndef KUIPER_INFER_INCLUDE_RUNTIME_RUNTIME_DATATYPE_HPP_
-#define KUIPER_INFER_INCLUDE_RUNTIME_RUNTIME_DATATYPE_HPP_
+/*
+ * @Author: lihaobo
+ * @Date: 2023-03-11 13:46:43
+ * @LastEditors: lihaobo
+ * @LastEditTime: 2023-03-11 14:32:01
+ * @Description: 请填写简介
+ */
+#ifndef TINYTENSOR_INFER_INCLUDE_RUNTIME_RUNTIME_DATATYPE_HPP_
+#define TINYTENSOR_INFER_INCLUDE_RUNTIME_RUNTIME_DATATYPE_HPP_
 /// 计算节点属性中的权重类型
 enum class RuntimeDataType {
   kTypeUnknown = 0,
@@ -15,4 +19,4 @@ enum class RuntimeDataType {
   kTypeInt8 = 7,
   kTypeUInt8 = 8,
 };
-#endif //KUIPER_INFER_INCLUDE_RUNTIME_RUNTIME_DATATYPE_HPP_
+#endif //TINYTENSOR_INFER_INCLUDE_RUNTIME_RUNTIME_DATATYPE_HPP_
