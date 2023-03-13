@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-13 14:14:16
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-13 15:24:18
+ * @LastEditTime: 2023-03-13 15:53:21
  * @Description: 请填写简介
  */
 #ifndef TINYTENSOR_INFER_INCLUDE_PARSER_PARSE_EXPRESSION_HPP_
@@ -36,9 +36,34 @@ struct TokenNode{
     std::shared_ptr<TokenNode> left = nullptr;
     std::shared_ptr<TokenNode> right = nullptr;
     TokenNode(int32_t num_idx,std::shared_ptr<TokenNode> left,std::shared_ptr<TokenNode> right);
-    ~TokenNode() = default;
+    TokenNode() = default;
 
 };
+class ExpressionParser 
+{
+private:
+    /* data */
+    std::string statement_;
+    std::vector<Token> tokens_;
+    std::vector<std::string> token_str_;
+    std::shared_ptr<TokenNode> Generate_(int32_t &index);
+
+    
+public:
+    explicit ExpressionParser (std::string statement):statement_(std::move(statement)){};
+
+    const std::vector<std::string> &token_strs() const;
+
+    const std::vector<Token> &tokens() const;
+
+    std::shared_ptr<TokenNode> Generate();
+
+    void Tokenizer(bool need_retoken = false);
+
+    ~ExpressionParser ();
+};
+
+
 
 
 } // namespace TinyTensor
