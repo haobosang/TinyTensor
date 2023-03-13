@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-13 14:14:16
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-13 14:30:14
+ * @LastEditTime: 2023-03-13 15:10:46
  * @Description: 请填写简介
  */
 #ifndef TINYTENSOR_INFER_INCLUDE_PARSER_PARSE_EXPRESSION_HPP_
@@ -12,6 +12,29 @@
 #include <string>
 #include <utility>
 
+namespace TinyTensor
+{
+
+enum class TokenType{
+    TokenUnKnown = -1,
+    TokenInputNumber = 0,
+    TokenComma = 1,
+    TokenAdd = 2,
+    TokenMul = 3,
+    TokenLeftBracket  = 4,
+    TokenRightBracket = 5,
+};
+
+struct Token{
+    TokenType token_type = TokenType::TokenUnKnown;
+    int32_t start_pos = 0;
+    int32_t end_pos = 0;
+    Token(TokenType token_type, int32_t start_pos, int32_t end_pos):token_type(token_type),start_pos(start_pos),end_pos(end_pos){}
+};
+
+
+
+} // namespace TinyTensor
 
 
 
