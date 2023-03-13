@@ -12,8 +12,9 @@
 using namespace TinyTensor;
 
 int main(){
-  const std::string &param_path = "./tmp/test.pnnx.param";
-  const std::string &bin_path = "./tmp/test.pnnx.bin";
+  const std::string &param_path = "../tmp/test.pnnx.param";
+  const std::string &bin_path = "../tmp/test.pnnx.bin";
+  //const std::string &bin_path = ".";
   RuntimeGraph graph(param_path, bin_path);
   graph.Init();
   const auto operators = graph.operators();
@@ -179,4 +180,4 @@ int main(){
   //   }
   // }
   // std::cout<< "Test1 passed!";
-}
+//}
