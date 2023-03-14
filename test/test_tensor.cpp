@@ -11,17 +11,17 @@
 #include "runtime/runtime_ir.hpp"
 using namespace TinyTensor;
 
-int main(){
-  const std::string &param_path = "../tmp/test.pnnx.param";
-  const std::string &bin_path = "../tmp/test.pnnx.bin";
-  //const std::string &bin_path = ".";
-  RuntimeGraph graph(param_path, bin_path);
-  graph.Init();
-  const auto operators = graph.operators();
-  for (const auto &operator_ : operators) {
-    LOG(INFO) << "type: " << operator_->type << " name: " << operator_->name;
-  }
-}
+// int main(){
+//   const std::string &param_path = "../tmp/test.pnnx.param";
+//   const std::string &bin_path = "../tmp/test.pnnx.bin";
+//   //const std::string &bin_path = ".";
+//   RuntimeGraph graph(param_path, bin_path);
+//   graph.Init();
+//   const auto operators = graph.operators();
+//   for (const auto &operator_ : operators) {
+//     LOG(INFO) << "type: " << operator_->type << " name: " << operator_->name;
+//   }
+// }
 // int main(){
 //   Tensor<float> tensor(3, 32, 32);
 //   // ASSERT_EQ(tensor.channels(), 3);
