@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-13 14:14:16
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-13 15:53:21
+ * @LastEditTime: 2023-03-14 10:08:46
  * @Description: 请填写简介
  */
 #ifndef TINYTENSOR_INFER_INCLUDE_PARSER_PARSE_EXPRESSION_HPP_
@@ -60,7 +60,7 @@ public:
 
     void Tokenizer(bool need_retoken = false);
 
-    ~ExpressionParser ();
+    //~ExpressionParser ();
 };
 
 
