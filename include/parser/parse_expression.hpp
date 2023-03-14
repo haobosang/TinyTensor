@@ -23,6 +23,7 @@ enum class TokenType{
     TokenMul = 3,
     TokenLeftBracket  = 4,
     TokenRightBracket = 5,
+    TokenDiv = 6,
 };
 
 struct Token{

@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-13 14:15:01
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-14 10:05:07
+ * @LastEditTime: 2023-03-14 10:53:42
  * @Description: 请填写简介
  */
 #include "parser/parse_expression.hpp"
@@ -57,6 +57,17 @@ void ExpressionParser::Tokenizer(bool need_retoken) {
       std::string token_operation = std::string(statement_.begin() + i, statement_.begin() + i + 3);
       token_str_.push_back(token_operation);
       i = i + 3;
+    }else if(c == 'd'){
+        CHECK(i + 1 < statement_.size() && statement_.at(i + 1) == 'i')
+              << "Parse add token failed, illegal character: " << c;
+        CHECK(i + 2 < statement_.size() && statement_.at(i + 2) == 'v')
+              << "Parse add token failed, illegal character: " << c;
+        Token token(TokenType::TokenDiv,i,i+3);
+        tokens_.push_back(token);
+        std::string token_operation = std::string(statement_.begin() + i, statement_.begin() + i + 3);
+        token_str_.push_back(token_operation);
+        i = i + 3;
+
     } else if (c == '@') {
       CHECK(i + 1 < statement_.size() && std::isdigit(statement_.at(i + 1)))
               << "Parse number token failed, illegal character: " << c;
@@ -97,80 +108,80 @@ void ExpressionParser::Tokenizer(bool need_retoken) {
 }
 
 const std::vector<Token> &ExpressionParser::tokens() const {
-  return this->tokens_;
+    return this->tokens_;
 }
 
 const std::vector<std::string> &ExpressionParser::token_strs() const {
-  return this->token_str_;
+    return this->token_str_;
 }
 
 std::shared_ptr<TokenNode> ExpressionParser::Generate_(int32_t &index) {
-  CHECK(index < this->tokens_.size());
-  const auto current_token = this->tokens_.at(index);
-  CHECK(current_token.token_type == TokenType::TokenInputNumber
-            || current_token.token_type == TokenType::TokenAdd || current_token.token_type == TokenType::TokenMul);
-  if (current_token.token_type == TokenType::TokenInputNumber) {
-    uint32_t start_pos = current_token.start_pos + 1;
-    uint32_t end_pos = current_token.end_pos;
-    CHECK(end_pos > start_pos);
-    CHECK(end_pos <= this->statement_.length());
-    const std::string &str_number =
-        std::string(this->statement_.begin() + start_pos, this->statement_.begin() + end_pos);
-    return std::make_shared<TokenNode>(std::stoi(str_number), nullptr, nullptr);
-
-  } else if (current_token.token_type == TokenType::TokenMul || current_token.token_type == TokenType::TokenAdd) {
-    std::shared_ptr<TokenNode> current_node = std::make_shared<TokenNode>();
-    current_node->num_idx = -int(current_token.token_type);
-
-    index += 1;
     CHECK(index < this->tokens_.size());
-    CHECK(this->tokens_.at(index).token_type == TokenType::TokenLeftBracket);
+    const auto current_token = this->tokens_.at(index);
+    CHECK(current_token.token_type == TokenType::TokenInputNumber
+                || current_token.token_type == TokenType::TokenAdd || current_token.token_type == TokenType::TokenMul||current_token.token_type == TokenType::TokenDiv);
+    if (current_token.token_type == TokenType::TokenInputNumber) {
+        uint32_t start_pos = current_token.start_pos + 1;
+        uint32_t end_pos = current_token.end_pos;
+        CHECK(end_pos > start_pos);
+        CHECK(end_pos <= this->statement_.length());
+        const std::string &str_number =
+            std::string(this->statement_.begin() + start_pos, this->statement_.begin() + end_pos);
+        return std::make_shared<TokenNode>(std::stoi(str_number), nullptr, nullptr);
 
-    index += 1;
-    CHECK(index < this->tokens_.size());
-    const auto left_token = this->tokens_.at(index);
+    } else if (current_token.token_type == TokenType::TokenMul || current_token.token_type == TokenType::TokenAdd||current_token.token_type == TokenType::TokenDiv) {
+        std::shared_ptr<TokenNode> current_node = std::make_shared<TokenNode>();
+        current_node->num_idx = -int(current_token.token_type);
 
-    if (left_token.token_type == TokenType::TokenInputNumber
-        || left_token.token_type == TokenType::TokenAdd || left_token.token_type == TokenType::TokenMul) {
-      current_node->left = Generate_(index);
+        index += 1;
+        CHECK(index < this->tokens_.size());
+        CHECK(this->tokens_.at(index).token_type == TokenType::TokenLeftBracket);
+
+        index += 1;
+        CHECK(index < this->tokens_.size());
+        const auto left_token = this->tokens_.at(index);
+
+        if (left_token.token_type == TokenType::TokenInputNumber
+            || left_token.token_type == TokenType::TokenAdd || left_token.token_type == TokenType::TokenMul||left_token.token_type == TokenType::TokenDiv) {
+        current_node->left = Generate_(index);
+        } else {
+        LOG(FATAL) << "Unknown token type: " << int(left_token.token_type);
+        }
+
+        index += 1;
+        CHECK(index < this->tokens_.size());
+        CHECK(this->tokens_.at(index).token_type == TokenType::TokenComma);
+
+        index += 1;
+        CHECK(index < this->tokens_.size());
+        const auto right_token = this->tokens_.at(index);
+        if (right_token.token_type == TokenType::TokenInputNumber
+            || right_token.token_type == TokenType::TokenAdd || right_token.token_type == TokenType::TokenMul|| right_token.token_type == TokenType::TokenDiv) {
+        current_node->right = Generate_(index);
+        } else {
+        LOG(FATAL) << "Unknown token type: " << int(left_token.token_type);
+        }
+    //负的都是操作数
+        index += 1;
+        CHECK(index < this->tokens_.size());
+        CHECK(this->tokens_.at(index).token_type == TokenType::TokenRightBracket);
+        return current_node;
     } else {
-      LOG(FATAL) << "Unknown token type: " << int(left_token.token_type);
+        LOG(FATAL) << "Unknown token type: " << int(current_token.token_type);
     }
-
-    index += 1;
-    CHECK(index < this->tokens_.size());
-    CHECK(this->tokens_.at(index).token_type == TokenType::TokenComma);
-
-    index += 1;
-    CHECK(index < this->tokens_.size());
-    const auto right_token = this->tokens_.at(index);
-    if (right_token.token_type == TokenType::TokenInputNumber
-        || right_token.token_type == TokenType::TokenAdd || right_token.token_type == TokenType::TokenMul) {
-      current_node->right = Generate_(index);
-    } else {
-      LOG(FATAL) << "Unknown token type: " << int(left_token.token_type);
-    }
-  //负的都是操作数
-    index += 1;
-    CHECK(index < this->tokens_.size());
-    CHECK(this->tokens_.at(index).token_type == TokenType::TokenRightBracket);
-    return current_node;
-  } else {
-    LOG(FATAL) << "Unknown token type: " << int(current_token.token_type);
-  }
 }
 
 std::shared_ptr<TokenNode> ExpressionParser::Generate() {
 
-  if (this->tokens_.empty()) {
+    if (this->tokens_.empty()) {
     this->Tokenizer(true);
-  }
-  int index = 0;
-  std::shared_ptr<TokenNode> root = Generate_(index);
-  CHECK(root != nullptr);
-  CHECK(index == tokens_.size() - 1);
+    }
+    int index = 0;
+    std::shared_ptr<TokenNode> root = Generate_(index);
+    CHECK(root != nullptr);
+    CHECK(index == tokens_.size() - 1);
 
-  return root;
+    return root;
 }
 
 TokenNode::TokenNode(int32_t num_index, std::shared_ptr<TokenNode> left, std::shared_ptr<TokenNode> right) :
