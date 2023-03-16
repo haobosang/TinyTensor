@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-13 14:15:01
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-14 10:53:42
+ * @LastEditTime: 2023-03-16 16:56:13
  * @Description: 请填写简介
  */
 #include "parser/parse_expression.hpp"
@@ -171,17 +171,18 @@ std::shared_ptr<TokenNode> ExpressionParser::Generate_(int32_t &index) {
     }
 }
 
-std::shared_ptr<TokenNode> ExpressionParser::Generate() {
-
-    if (this->tokens_.empty()) {
+std::vector<std::shared_ptr<TokenNode>> ExpressionParser::Generate() {
+  if (this->tokens_.empty()) {
     this->Tokenizer(true);
-    }
-    int index = 0;
-    std::shared_ptr<TokenNode> root = Generate_(index);
-    CHECK(root != nullptr);
-    CHECK(index == tokens_.size() - 1);
+  }
+  int index = 0;
+  std::shared_ptr<TokenNode> root = Generate_(index);
+  CHECK(root != nullptr);
+  CHECK(index == tokens_.size() - 1);
 
-    return root;
+  std::vector<std::shared_ptr<TokenNode>> reverse_polish;
+  ReversePolish(root, reverse_polish);
+  return reverse_polish;
 }
 
 TokenNode::TokenNode(int32_t num_index, std::shared_ptr<TokenNode> left, std::shared_ptr<TokenNode> right) :
