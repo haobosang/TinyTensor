@@ -196,5 +196,7 @@ void Tensor<float>::Show(){
 std::shared_ptr<Tensor<float>> Tensor<float>::Clone(){
     return std::make_shared<Tensor>(*this);
 }
-
+std::shared_ptr<Tensor<float>> ElementAdd(const std::shared_ptr<Tensor<float>> &tensor1,const std::shared_ptr<Tensor<float>> &tensor2){
+    
+}
 }

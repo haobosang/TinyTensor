@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-16 15:44:49
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-16 21:19:13
+ * @LastEditTime: 2023-03-17 11:13:49
  * @Description: 请填写简介
  */
 
@@ -65,9 +65,9 @@ void ExpressionLayer::Forwards(const std::vector<std::shared_ptr<Tensor<float>>>
             for(uint32_t i =0;i<batch_size;i++)
             {
                 if(op == -int(TokenType::TokenAdd)){
-                    output_token_nodes.at(i) = Tensor<float>::ElementAdd(input_node1,input_node2);
+                    output_token_nodes.at(i) = Tensor<float>::ElementAdd(input_node1.at(i),input_node2.at(i));
                 }else if(op == -int(TokenType::TokenMul)){
-                     output_token_nodes.at(i) = Tensor<float>::ElementMul(input_node1,input_node2);
+                     output_token_nodes.at(i) = Tensor<float>::ElementMul(input_node1.at(i),input_node2.at(i));
                 }else{
                     LOG(FATAL) << "Unknown operator type: " << op;
                 }

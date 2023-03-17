@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-02-28 14:03:59
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-07 20:23:31
+ * @LastEditTime: 2023-03-17 11:14:57
  * @Description: 请填写简介
  */
 #ifndef TINYTENSOR_INCLUDE_TENSOR_HPP_
@@ -74,6 +74,11 @@ public:
     void Flatten();
 
     std::shared_ptr<Tensor<float>> Clone();
+
+    static std::shared_ptr<Tensor<float>> ElementAdd(const std::shared_ptr<Tensor<float>> &tensor1,const std::shared_ptr<Tensor<float>> &tensor2);
+
+    static std::shared_ptr<Tensor<float>> ElementMul(const std::shared_ptr<Tensor<float>> &tensor1, const std::shared_ptr<Tensor<float>> &tensor2);
+    
 private:
     arma::fcube data_;
     std::vector<uint32_t> raw_shapes_;
