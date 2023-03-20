@@ -196,13 +196,20 @@ void Tensor<float>::Show(){
 std::shared_ptr<Tensor<float>> Tensor<float>::Clone(){
     return std::make_shared<Tensor>(*this);
 }
-std::shared_ptr<Tensor<float>> ElementAdd(const std::shared_ptr<Tensor<float>> &tensor1,const std::shared_ptr<Tensor<float>> &tensor2){
+std::shared_ptr<Tensor<float>> Tensor<float>::ElementAdd(const std::shared_ptr<Tensor<float>> &tensor1,const std::shared_ptr<Tensor<float>> &tensor2){
     CHECK(!tensor1->empty()&&!tensor2->empty());
     CHECK(tensor1->shapes() == tensor2->shapes()) << "Tensors shape are not adapting";
     std::shared_ptr<Tensor<float>> output_tensor = std::make_shared<Tensor<float>>(tensor1->channels(),tensor1->rows(),tensor1->cols());
     output_tensor->set_data(tensor1->data()+tensor2->data());
 
     return output_tensor;
+
+}
+std::shared_ptr<Tensor<float>> Tensor<float>::ElementMul(const std::shared_ptr<Tensor<float>> &tensor1,const std::shared_ptr<Tensor<float>> &tensor2){
+    CHECK(!tensor1->empty()&&!tensor2->empty());
+    CHECK(tensor1->shapes() == tensor2->shapes()) << "Tensors shape are not adapting";
+   
+    //return output_tensor;
 
 }
 

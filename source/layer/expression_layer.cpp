@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-16 15:44:49
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-17 11:13:49
+ * @LastEditTime: 2023-03-20 12:51:12
  * @Description: 请填写简介
  */
 
@@ -24,7 +24,7 @@ ExpressionLayer::ExpressionLayer(const std::shared_ptr<Operator> &op):Layer("Exp
 void ExpressionLayer::Forwards(const std::vector<std::shared_ptr<Tensor<float>>> &input,std::vector<std::shared_ptr<Tensor<float>>> &output){
     CHECK(!input.empty());
 
-    const uint32_t batch_size = input.size();
+    const uint32_t batch_size = output.size();
 
     CHECK(batch_size !=0 );
 

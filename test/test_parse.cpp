@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-14 09:59:13
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-20 10:50:30
+ * @LastEditTime: 2023-03-20 13:04:48
  * @Description: 请填写简介
  */
 #include "parser/parse_expression.hpp"
@@ -70,26 +70,31 @@ int main(){
 
   int batch_size = 4;
   for (int i = 0; i < batch_size; ++i) {
-    std::shared_ptr<Tensor<float>> input = std::make_shared<Tensor<float>>(3, 224, 224);
+    std::shared_ptr<Tensor<float>> input = std::make_shared<Tensor<float>>(3, 4, 4);
     input->Fill(1.f);
     inputs.push_back(input);
   }
 
   for (int i = 0; i < batch_size; ++i) {
-    std::shared_ptr<Tensor<float>> input = std::make_shared<Tensor<float>>(3, 224, 224);
+    std::shared_ptr<Tensor<float>> input = std::make_shared<Tensor<float>>(3, 4, 4);
     input->Fill(2.f);
     inputs.push_back(input);
   }
 
   for (int i = 0; i < batch_size; ++i) {
-    std::shared_ptr<Tensor<float>> output = std::make_shared<Tensor<float>>(3, 224, 224);
+    std::shared_ptr<Tensor<float>> output = std::make_shared<Tensor<float>>(3, 4, 4);
     outputs.push_back(output);
   }
+  // for (int i = batch_size; i < batch_size * 2; ++i) {
+  //   std::shared_ptr<Tensor<float>> output = std::make_shared<Tensor<float>>(3, 224, 224);
+  //   outputs.push_back(output);l
+  // }
   layer.Forwards(inputs, outputs);
   for (int i = 0; i < batch_size; ++i) {
     const auto &result = outputs.at(i);
     for (int j = 0; j < result->size(); ++j) {
-      std::cout<<result->index(j)<<"?"<<3.f;
+      std::cout<<result->index(j)<<"?"<<3.f<<" ";
     }
+     std::cout<<std::endl;
   }
 }
