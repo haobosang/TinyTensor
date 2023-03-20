@@ -204,8 +204,6 @@ std::shared_ptr<Tensor<float>> ElementAdd(const std::shared_ptr<Tensor<float>> &
 
     return output_tensor;
 
-
-
 }
 
 
