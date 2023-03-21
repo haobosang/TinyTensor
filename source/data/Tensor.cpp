@@ -206,9 +206,39 @@ std::shared_ptr<Tensor<float>> Tensor<float>::ElementAdd(const std::shared_ptr<T
 
 }
 std::shared_ptr<Tensor<float>> Tensor<float>::ElementMul(const std::shared_ptr<Tensor<float>> &tensor1,const std::shared_ptr<Tensor<float>> &tensor2){
-    CHECK(!tensor1->empty()&&!tensor2->empty());
-    CHECK(tensor1->shapes() == tensor2->shapes()) << "Tensors shape are not adapting";
-   
+    CHECK(!tensor1->empty() && !tensor2->empty());
+    if (tensor1->shapes() == tensor2->shapes()) {
+        std::shared_ptr<Tensor<float>> output_tensor =
+            std::make_shared<Tensor<float >>(tensor1->channels(), tensor1->rows(), tensor1->cols());
+        output_tensor->data_ = tensor1->data_ % tensor2->data_;
+        return output_tensor;
+    } else {
+        CHECK(tensor1->channels() == tensor2->channels()) << "Tensors shape are not adapting";
+        uint32_t channels = tensor1->channels();
+        std::shared_ptr<Tensor<float>> tensor1_;
+        std::shared_ptr<Tensor<float>> tensor2_;
+
+        if (tensor2->rows() == 1 && tensor2->cols() == 1) {
+        tensor1_ = tensor1;
+        tensor2_ = tensor2;
+        } else if (tensor1->rows() == 1 && tensor1->cols() == 1) {
+        tensor1_ = tensor2;
+        tensor2_ = tensor1;
+        } else {
+        LOG(FATAL) << "Tensors shape are not adapting";
+        }
+
+        const std::shared_ptr<Tensor<float>>
+            input_tensor2_ = std::make_shared<Tensor<float>>(channels, tensor1_->rows(), tensor1_->cols());
+        for (uint32_t c = 0; c < channels; ++c) {
+        input_tensor2_->data_.slice(c).fill(tensor2_->index(c));
+        }
+        std::shared_ptr<Tensor<float>> output_tensor =
+            std::make_shared<Tensor<float>>(input_tensor2_->rows(), input_tensor2_->cols(), input_tensor2_->channels());
+        output_tensor->data_ = tensor1_->data_ % input_tensor2_->data_;
+        return output_tensor;
+    }
+    
     //return output_tensor;
 
 }
