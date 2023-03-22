@@ -2,92 +2,88 @@
  * @Author: lihaobo
  * @Date: 2023-02-28 14:03:59
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-17 11:14:57
+ * @LastEditTime: 2023-03-22 19:30:23
  * @Description: 请填写简介
  */
 #ifndef TINYTENSOR_INCLUDE_TENSOR_HPP_
 #define TINYTENSOR_INCLUDE_TENSOR_HPP_
 
-#include<memory>
-#include<vector>
-#include<armadillo>
+#include <memory>
+#include <vector>
+#include <armadillo>
 
+namespace TinyTensor
+{
 
-namespace TinyTensor{
+    template <typename T>
+    class Tensor
+    {
+    };
+    template <>
+    class Tensor<uint8_t>
+    {
+        // 暂时搁置
+    };
+    template <>
+    class Tensor<float>
+    {
+    public:
+        explicit Tensor() = default;
+        explicit Tensor(uint32_t channels, uint32_t rows, uint32_t cols);
 
-template<typename T> 
-class Tensor{
-    
+        Tensor(const Tensor &tensor);
+        Tensor<float> &operator=(const Tensor &tensor);
 
-};
-template<>
-class Tensor<uint8_t>{
-    //暂时搁置
-};
-template<>
-class Tensor<float>{
-public:
-    explicit Tensor() = default;
-    explicit Tensor(uint32_t channels,uint32_t rows,uint32_t cols);
+        uint32_t channels() const;
+        uint32_t rows() const;
+        uint32_t cols() const;
+        uint32_t size() const;
 
-    Tensor(const Tensor &tensor);
-    Tensor<float> &operator= (const Tensor &tensor);
+        void set_data(const arma::fcube &data);
+        bool empty() const;
 
-    uint32_t channels() const;
-    uint32_t rows() const;
-    uint32_t cols() const;
-    uint32_t size() const;
+        float index(uint32_t offset) const;
+        float &index(uint32_t offset);
 
-    void set_data(const arma::fcube &data); 
-    bool empty() const;
+        std::vector<uint32_t> shapes() const;
 
+        arma::fcube &data();
 
-    float index(uint32_t offset) const;
-    float& index(uint32_t offset);
+        const arma::fcube &data() const;
 
-    std::vector<uint32_t> shapes() const;
+        arma::fmat &at(uint32_t channel);
 
-    arma::fcube &data();
+        const arma::fmat &at(uint32_t channel) const;
 
-    const arma::fcube &data() const;
+        float at(uint32_t channel, uint32_t row, uint32_t col) const;
 
-    arma::fmat &at(uint32_t channel);
+        float &at(uint32_t channel, uint32_t row, uint32_t col);
 
-    const arma::fmat &at(uint32_t channel) const;
+        void Padding(const std::vector<uint32_t> &pads, float padding_value);
 
-    float at(uint32_t channel, uint32_t row, uint32_t col) const;
+        void Fill(float value);
 
-    float &at(uint32_t channel, uint32_t row, uint32_t col);
+        void Fill(const std::vector<float> &values);
 
-    void Padding(const std::vector<uint32_t> &pads, float padding_value);
+        void Ones();
 
-    void Fill(float value);
+        void Rand();
 
-    void Fill(const std::vector<float> &values);
+        void Show();
 
-    void Ones();
+        void Flatten();
 
-    void Rand();
+        std::shared_ptr<Tensor<float>> Clone();
 
-    void Show();
+        static std::shared_ptr<Tensor<float>> ElementAdd(const std::shared_ptr<Tensor<float>> &tensor1, const std::shared_ptr<Tensor<float>> &tensor2);
 
-    void Flatten();
+        static std::shared_ptr<Tensor<float>> ElementMul(const std::shared_ptr<Tensor<float>> &tensor1, const std::shared_ptr<Tensor<float>> &tensor2);
 
-    std::shared_ptr<Tensor<float>> Clone();
-
-    static std::shared_ptr<Tensor<float>> ElementAdd(const std::shared_ptr<Tensor<float>> &tensor1,const std::shared_ptr<Tensor<float>> &tensor2);
-
-    static std::shared_ptr<Tensor<float>> ElementMul(const std::shared_ptr<Tensor<float>> &tensor1, const std::shared_ptr<Tensor<float>> &tensor2);
-    
-private:
-    arma::fcube data_;
-    std::vector<uint32_t> raw_shapes_;
-};
-
+    private:
+        arma::fcube data_;
+        std::vector<uint32_t> raw_shapes_;
+    };
 
 }
 
-
-
-
-#endif //TINTTENSOR_INCLUDE_TENSOR_HPP_
+#endif // TINTTENSOR_INCLUDE_TENSOR_HPP_
