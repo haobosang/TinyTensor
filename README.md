@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-02 10:12:49
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-21 20:20:23
+ * @LastEditTime: 2023-03-22 19:39:26
  * @Description: 请填写简介
 -->
 # TinyTensor
@@ -14,6 +14,7 @@ TinyTensor是一种用于运行已经训练好的神经网络模型的工具，�
 * 开发语言：C++ 20
 * 数学库：  Armadillo
 * 单元测试：Google Test
+* 代码风格：Google Style
 ## 环境配置
 
 ```
