@@ -16,7 +16,7 @@ enum class OpType{
     kOperatorRelu = 0,
     kOperatorSigmod = 1,
     kExpression = 2,
-    
+    kOperatorConvolution = 3,
 };
 
 class Operator{

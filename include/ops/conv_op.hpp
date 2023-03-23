@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-22 19:47:35
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-22 20:21:08
+ * @LastEditTime: 2023-03-23 15:28:34
  * @Description: 请填写简介
  */
 #ifndef TINYTENSOR_OPS_CONV_OP_HPP_
@@ -24,6 +24,7 @@ private:
     std::vector<Tensor<float>> weight_;
     std::vector<Tensor<float>> bias_;
 public:
+    explicit ConvolutionOp():Operator(OpType::kOperatorConvolution),{}
 
 
 
