@@ -2,27 +2,25 @@
 #define TINYTENSOR_INCLUDE_OPS_RELU_OP_HPP_
 #include "op.hpp"
 
-namespace TinyTensor{
-
-class ReluOperaor : public Operator
+namespace TinyTensor
 {
-private:
-    /* data */
-    float thresh_ = 0.f;
 
-public:
-    ~ReluOperaor() override = default;
+    class ReluOperaor : public Operator
+    {
+    private:
+        /* data */
+        float thresh_ = 0.f;
 
-    explicit ReluOperaor(float thresh);
+    public:
+        ~ReluOperaor() override = default;
 
-    void set_thresh(float thresh);
+        explicit ReluOperaor(float thresh);
 
-    float get_thresh() const;
-};
+        void set_thresh(float thresh);
 
-
+        float get_thresh() const;
+    };
 
 }
 
-
-#endif //TINYTENSOR_INCLUDE_OPS_RELU_OP_HPP_
+#endif // TINYTENSOR_INCLUDE_OPS_RELU_OP_HPP_

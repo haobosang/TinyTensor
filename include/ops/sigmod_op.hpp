@@ -11,17 +11,15 @@
 #include "layer/layer.hpp"
 namespace TinyTensor
 {
-    
-class SigmodOperaor : public Operator
-{
-private:
-    /* data */
-public:
-    SigmodOperaor(/* args */);
-};
 
+    class SigmodOperaor : public Operator
+    {
+    private:
+        /* data */
+    public:
+        SigmodOperaor(/* args */);
+    };
 
 } // namespace TinyTensor
 
-
-#endif //TINYTENSOR_INCLUDE_OPS_SIGMOD_OP_HPP_
+#endif // TINYTENSOR_INCLUDE_OPS_SIGMOD_OP_HPP_
