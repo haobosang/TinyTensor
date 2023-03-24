@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-22 19:47:35
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-23 21:21:33
+ * @LastEditTime: 2023-03-24 14:32:20
  * @Description: 请填写简介
  */
 #ifndef TINYTENSOR_OPS_CONV_OP_HPP_
@@ -23,8 +23,8 @@ namespace TinyTensor
         uint32_t padding_w_ = 0;
         uint32_t stride_h_ = 1;
         uint32_t stride_w_ = 1;
-        std::vector<Tensor<float>> weight_;
-        std::vector<Tensor<float>> bias_;
+        std::vector<std::shared_ptr<Tensor<float>>> weight_;
+        std::vector<std::shared_ptr<Tensor<float>>> bias_;
 
     public:
         explicit ConvolutionOp(bool use_bias, uint32_t groups, uint32_t padding_h, uint32_t padding_w,
