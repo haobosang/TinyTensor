@@ -2,29 +2,37 @@
  * @Author: lihaobo
  * @Date: 2023-03-02 10:12:49
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-22 19:39:26
+ * @LastEditTime: 2023-03-27 19:31:20
  * @Description: 请填写简介
 -->
 # TinyTensor
 ![Github cmake](https://img.shields.io/badge/cmake-3.16%2B-green)  
-TinyTensor是一种用于运行已经训练好的神经网络模型的工具，以便能够使用它们进行各种任务的推理，如图像分类,语义分割等。
-![TinyTensor](./img/TinyTensor.png)
 
-## 使用的技术和开发环境
+![TinyTensor](./img/TinyTensor.png)
+TinyTensor supports a variety of popular neural network architectures such as convolutional neural networks (CNNs), recurrent neural networks (RNNs), and fully connected neural networks, and it can be used for tasks such as image classification, object detection, speech recognition, and natural language processing.
+## Development Environment
 * 开发语言：C++ 20
 * 数学库：  Armadillo
 * 单元测试：Google Test
 * 代码风格：Google Style
-## 环境配置
-
+## How to build on Linux
+### Ubuntu 18 (Debian 10)
 ```
 apt update
 apt install cmake libopenblas-dev liblapack-dev libarpack2-dev libsuperlu-dev
 ```
+### Install Armadillo
+```
+https://arma.sourceforge.net/docs.html
+mkdir build && cd build
+cmake ..
+make -j8
+make install
+```
 
-
-## 目前已实现的算子
+## Operators Currently Implemented
 - ReLU
 - Sigmod
-## 致谢
+- Conv
+## Acknowledgement
 caffe
