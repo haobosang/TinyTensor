@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-22 19:47:35
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-24 14:32:20
+ * @LastEditTime: 2023-03-27 19:07:56
  * @Description: 请填写简介
  */
 #ifndef TINYTENSOR_OPS_CONV_OP_HPP_
@@ -27,9 +27,9 @@ namespace TinyTensor
         std::vector<std::shared_ptr<Tensor<float>>> bias_;
 
     public:
-        explicit ConvolutionOp(bool use_bias, uint32_t groups, uint32_t padding_h, uint32_t padding_w,
-                               uint32_t stride_h, uint32_t stride_w) : Operator(OpType::kOperatorConvolution), use_bais_(use_bias), groups_(groups),
-                                                                       padding_h_(padding_h), padding_w_(padding_w), stride_h_(stride_h), stride_w_(stride_w)
+        explicit ConvolutionOp(bool use_bias, uint32_t groups, uint32_t stride_h, uint32_t stride_w,
+                               uint32_t padding_h, uint32_t padding_w) : Operator(OpType::kOperatorConvolution), use_bais_(use_bias), groups_(groups),
+                                                                       stride_h_(stride_h), stride_w_(stride_w),padding_h_(padding_h), padding_w_(padding_w)
         {
         }
 

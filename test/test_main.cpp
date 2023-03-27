@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-21 19:52:25
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-22 19:47:14
+ * @LastEditTime: 2023-03-27 16:57:06
  * @Description: 请填写简介
  */
 #include <gtest/gtest.h>
@@ -10,7 +10,7 @@
 
 int main(int argc, char *argv[]) {
     testing::InitGoogleTest(&argc, argv);
-    google::InitGoogleLogging("TinyTensor");
+    google::InitGoogleLogging("MyTinyTensor");
     FLAGS_log_dir = "./log/";
     FLAGS_alsologtostderr = true;
 
