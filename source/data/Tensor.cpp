@@ -211,6 +211,7 @@ std::shared_ptr<Tensor<float>> Tensor<float>::ElementMul(const std::shared_ptr<T
         std::shared_ptr<Tensor<float>> output_tensor =
             std::make_shared<Tensor<float >>(tensor1->channels(), tensor1->rows(), tensor1->cols());
         output_tensor->data_ = tensor1->data_ % tensor2->data_;
+
         return output_tensor;
     } else {
         CHECK(tensor1->channels() == tensor2->channels()) << "Tensors shape are not adapting";

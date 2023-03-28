@@ -2,7 +2,7 @@
  * @Author: lihaobo
  * @Date: 2023-03-27 16:46:38
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-27 16:52:58
+ * @LastEditTime: 2023-03-28 13:30:38
  * @Description: 请填写简介
  */
 #include <gtest/gtest.h>
@@ -46,6 +46,7 @@ TEST(test_layer, conv1)
     input->Show();
     // 权重数据和输入数据准备完毕
     inputs.push_back(input);
+    
     ConvolutionLayer layer(op);
     std::vector<std::shared_ptr<Tensor<float>>> outputs(1);
 
