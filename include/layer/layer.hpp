@@ -4,7 +4,7 @@
  * @LastEditors: lihaobo
  * @LastEditTime: 2023-03-06 17:43:25
  * @FilePath: /MyTinyTensor/include/layer/layer.hpp
- * @Description: 
+ * @Description:
  */
 #ifndef TINYTENSOR_INCLUDE_LAYER_HPP_
 #define TINYTENSOR_INCLUDE_LAYER_HPP_
@@ -12,28 +12,23 @@
 #include "data/Tensor.hpp"
 #include <string>
 
-namespace TinyTensor{
+namespace TinyTensor {
 
-class Layer
-{
+class Layer {
 private:
-    /* data */
-    std::string _layer_name_;
+  /* data */
+  std::string _layer_name_;
 
-    
 public:
-    explicit Layer(const std::string &layer_name);
-    
-    virtual ~Layer() = default;
+  explicit Layer(const std::string &layer_name);
 
-    virtual void Forwards(const std::vector<std::shared_ptr<Tensor<float>>> &inputs,
-                                std::vector<std::shared_ptr<Tensor<float>>> &outputs);
+  virtual ~Layer() = default;
 
+  virtual void
+  Forwards(const std::vector<std::shared_ptr<Tensor<float>>> &inputs,
+           std::vector<std::shared_ptr<Tensor<float>>> &outputs);
 };
 
+} // namespace TinyTensor
 
-
-}
-
-
-#endif //TINYTENSOR_INCLUDE_LAYER_HPP_
+#endif // TINYTENSOR_INCLUDE_LAYER_HPP_
