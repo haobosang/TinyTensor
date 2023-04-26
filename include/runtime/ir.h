@@ -218,9 +218,11 @@ class Graph
 {
 public:
     Graph();
+    
     ~Graph();
 
     int load(const std::string& parampath, const std::string& binpath);
+
     int save(const std::string& parampath, const std::string& binpath);
 
     int python(const std::string& pypath, const std::string& binpath);
@@ -240,6 +242,7 @@ public:
     Operand* new_operand(const std::string& name);
 
     Operand* get_operand(const std::string& name);
+
     const Operand* get_operand(const std::string& name) const;
 
     std::vector<Operator*> ops;

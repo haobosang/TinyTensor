@@ -31,6 +31,26 @@
 
 namespace TinyTensor {
 /// 计算图结构，由多个计算节点和节点之间的数据流图组成
+
+class RuntimeGraphShape {
+ public:
+  /**
+   * 如果图是第一次运行，则根据节点输入operand的形状准备好后续Layer计算中所需要的Tensor
+   * 如果图是第二次以上运行，则检查输入operand的形状和operand中张量的形状是否匹配
+   * @param operators 计算图中的计算节点
+   */
+  static void InitOperatorInputTensor(const std::vector<std::shared_ptr<RuntimeOperator>> &operators);
+
+  /**
+   * 如果图是第一次运行，则根据节点输出operand的形状准备好后续Layer计算中所需要的Tensor
+   * 如果图是第二次以上运行，则检查输出operand的形状和operand中张量的形状是否匹配
+   * @param pnnx_operators pnnx图节点
+   * @param operators KuiperInfer计算图中的计算节点
+   */
+  static void InitOperatorOutputTensor(const std::vector<pnnx::Operator *> &pnnx_operators,
+                                       const std::vector<std::shared_ptr<RuntimeOperator>> &operators);
+};
+
 class RuntimeGraph {
  public:
   /**
@@ -39,6 +59,7 @@ class RuntimeGraph {
    */
   bool Init();
 
+  void Build(const std::string &input_name, const std::string &output_name);
   /**
    * 初始化计算图
    * @param param_path 计算图的结构文件
