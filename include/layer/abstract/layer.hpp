@@ -9,38 +9,46 @@
 #ifndef TINYTENSOR_INCLUDE_LAYER_HPP_
 #define TINYTENSOR_INCLUDE_LAYER_HPP_
 
-#include "data/Tensor.hpp"
 #include <string>
-#include "status_code.hpp"
+#include <utility>
 #include <vector>
+#include <memory>
+#include <glog/logging.h>
 
-namespace TinyTensor {
+#include "status_code.hpp"
+#include "data/tensor.hpp"
+#include "runtime/runtime_op.hpp"
+
+namespace kuiper_infer {
 
 class Layer {
-private:
-  /* data */
-  std::string _layer_name_;
-
-public:
-  explicit Layer(const std::string &layer_name):_layer_name_(std::move(layer_name)){
+ public:
+  explicit Layer(std::string layer_name) : layer_name_(std::move(layer_name)) {
 
   }
 
   virtual ~Layer() = default;
 
-  virtual InferStatus Forwards(const std::vector<std::shared_ptr<Tensor<float>>> &inputs,
-           std::vector<std::shared_ptr<Tensor<float>>> &outputs);
+  /**
+   * Layer的执行函数
+   * @param inputs 层的输入
+   * @param outputs 层的输出
+   * @return 执行的状态
+   */
+  virtual InferStatus Forward(const std::vector<std::shared_ptr<Tensor<float>>> &inputs,
+                              std::vector<std::shared_ptr<Tensor<float>>> &outputs);
 
   /**
    * 返回层的权重
    * @return 返回的权重
    */
-  virtual const std::vector<std::shared_ptr<Tensor<float>>> &weight() const;
-   /**
+  virtual const std::vector<std::shared_ptr<Tensor<float>>> &weights() const;
+
+  /**
    * 返回层的偏移量
    * @return 返回的偏移量
    */
-  virtual const std::vector<std::shape_str<Tensor<float>>> &bias() const;
+  virtual const std::vector<std::shared_ptr<Tensor<float>>> &bias() const;
 
   virtual void set_weights(const std::vector<std::shared_ptr<Tensor<float>>> &weights);
 
@@ -68,10 +76,9 @@ public:
    */
   virtual const std::string &layer_name() const { return this->layer_name_; }
 
-
-
+ protected:
+  std::string layer_name_; /// Layer的名称
 };
 
-} // namespace TinyTensor
-
+}
 #endif // TINYTENSOR_INCLUDE_LAYER_HPP_
