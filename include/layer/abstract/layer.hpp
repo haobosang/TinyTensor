@@ -19,7 +19,7 @@
 #include "data/Tensor.hpp"
 #include "runtime/runtime_op.hpp"
 
-namespace kuiper_infer {
+namespace TinyTensor {
 
 class Layer {
  public:
