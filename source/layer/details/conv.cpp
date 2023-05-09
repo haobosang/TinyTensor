@@ -1,8 +1,8 @@
-#include "convolution.hpp"
+#include "conv.hpp"
 #include <glog/logging.h>
 #include "layer/abstract/layer_factory.hpp"
 #include "runtime/runtime_ir.hpp"
-#include "tick.hpp"
+//#include "tick.hpp"
 
 namespace TinyTensor {
 ConvolutionLayer::ConvolutionLayer(uint32_t output_channel, uint32_t in_channel,

@@ -16,7 +16,7 @@
 #include <glog/logging.h>
 
 #include "status_code.hpp"
-#include "data/tensor.hpp"
+#include "data/Tensor.hpp"
 #include "runtime/runtime_op.hpp"
 
 namespace kuiper_infer {
