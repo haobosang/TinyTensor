@@ -15,6 +15,8 @@ TinyTensor supports a variety of popular neural network architectures such as co
 * Math Library: Armadillo
 * unit test:    Google Test
 * Code style:   Clang format
+* performance testing： Benckmark
+* Logging framework：Google glog
 ## How to build on Linux
 ### Ubuntu 18 (Debian 10)
 ```
