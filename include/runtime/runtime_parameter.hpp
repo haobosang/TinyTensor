@@ -5,10 +5,6 @@
  * @LastEditTime: 2023-03-11 14:47:55
  * @Description: 请填写简介
  */
-//
-// Created by fss on 22-11-28.
-//
-
 #ifndef TINYETNSOR_INFER_INCLUDE_PARSER_RUNTIME_PARAMETER_HPP_
 #define TINYETNSOR_INFER_INCLUDE_PARSER_RUNTIME_PARAMETER_HPP_
 #include "status_code.hpp"

@@ -13,8 +13,11 @@ TinyTensor supports a variety of popular neural network architectures such as co
 ## Development Environment
 * Development   language: C++ 20
 * Math Library: Armadillo
-* unit test:    Google Test
+* Logging framework：Google glog
+* Unit test:    Google Test
 * Code style:   Clang format
+* Performance testing： Benckmark
+
 ## How to build on Linux
 ### Ubuntu 18 (Debian 10)
 ```
@@ -23,7 +26,7 @@ apt install cmake libopenblas-dev liblapack-dev libarpack2-dev libsuperlu-dev
 ```
 ### Install Armadillo
 ```
-https://arma.sourceforge.net/docs.html
+wget https://sourceforge.net/projects/arma/files/armadillo-12.2.0.tar.xz
 mkdir build && cd build
 cmake ..
 make -j8
