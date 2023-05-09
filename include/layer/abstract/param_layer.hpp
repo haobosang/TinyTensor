@@ -5,7 +5,7 @@
 
 namespace TinyTensor {
 class ParamLayer : public Layer {
- public:
+public:
   explicit ParamLayer(const std::string &layer_name);
 
   void InitWeightParam(const uint32_t param_count, const uint32_t param_channel,
@@ -25,14 +25,14 @@ class ParamLayer : public Layer {
   void set_weights(
       const std::vector<std::shared_ptr<Tensor<float>>> &weights) override;
 
-  void set_bias(
-      const std::vector<std::shared_ptr<Tensor<float>>> &bias) override;
+  void
+  set_bias(const std::vector<std::shared_ptr<Tensor<float>>> &bias) override;
 
- protected:
+protected:
   std::vector<std::shared_ptr<Tensor<float>>> weights_;
   std::vector<std::shared_ptr<Tensor<float>>> bias_;
 };
 
-}  // namespace kuiper_infer
+} // namespace TinyTensor
 
-#endif //TINYTENSOR_INFER_SOURCE_LAYER_PARAM_LAYER_HPP_
+#endif // TINYTENSOR_INFER_SOURCE_LAYER_PARAM_LAYER_HPP_

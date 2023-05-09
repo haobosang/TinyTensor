@@ -9,23 +9,21 @@
 #ifndef TINYTENSOR_INCLUDE_LAYER_HPP_
 #define TINYTENSOR_INCLUDE_LAYER_HPP_
 
+#include <glog/logging.h>
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
-#include <memory>
-#include <glog/logging.h>
 
-#include "status_code.hpp"
 #include "data/Tensor.hpp"
 #include "runtime/runtime_op.hpp"
+#include "status_code.hpp"
 
 namespace TinyTensor {
 
 class Layer {
- public:
-  explicit Layer(std::string layer_name) : layer_name_(std::move(layer_name)) {
-
-  }
+public:
+  explicit Layer(std::string layer_name) : layer_name_(std::move(layer_name)) {}
 
   virtual ~Layer() = default;
 
@@ -35,8 +33,9 @@ class Layer {
    * @param outputs 层的输出
    * @return 执行的状态
    */
-  virtual InferStatus Forward(const std::vector<std::shared_ptr<Tensor<float>>> &inputs,
-                              std::vector<std::shared_ptr<Tensor<float>>> &outputs);
+  virtual InferStatus
+  Forward(const std::vector<std::shared_ptr<Tensor<float>>> &inputs,
+          std::vector<std::shared_ptr<Tensor<float>>> &outputs);
 
   /**
    * 返回层的权重
@@ -50,13 +49,15 @@ class Layer {
    */
   virtual const std::vector<std::shared_ptr<Tensor<float>>> &bias() const;
 
-  virtual void set_weights(const std::vector<std::shared_ptr<Tensor<float>>> &weights);
+  virtual void
+  set_weights(const std::vector<std::shared_ptr<Tensor<float>>> &weights);
 
   /**
    * 设置Layer的偏移量
    * @param bias 偏移量
    */
-  virtual void set_bias(const std::vector<std::shared_ptr<Tensor<float>>> &bias);
+  virtual void
+  set_bias(const std::vector<std::shared_ptr<Tensor<float>>> &bias);
 
   /**
    * 设置Layer的权重
@@ -76,9 +77,9 @@ class Layer {
    */
   virtual const std::string &layer_name() const { return this->layer_name_; }
 
- protected:
+protected:
   std::string layer_name_; /// Layer的名称
 };
 
-}
+} // namespace TinyTensor
 #endif // TINYTENSOR_INCLUDE_LAYER_HPP_
