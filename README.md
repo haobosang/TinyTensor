@@ -26,7 +26,7 @@ apt install cmake libopenblas-dev liblapack-dev libarpack2-dev libsuperlu-dev
 ```
 ### Install Armadillo
 ```
-https://arma.sourceforge.net/docs.html
+wget https://sourceforge.net/projects/arma/files/armadillo-12.2.0.tar.xz
 mkdir build && cd build
 cmake ..
 make -j8
