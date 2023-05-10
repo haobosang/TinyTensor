@@ -1,22 +1,28 @@
 find_package(GTest REQUIRED)
+find_package(glog REQUIRED)
+find_package(Armadillo REQUIRED)
+find_package(BLAS REQUIRED)
+find_package(LAPACK REQUIRED)
 
-aux_source_directory(../test DIR_TEST)
-set(link_lib glog gtest pthread  )
-set(link_math_lib armadillo blas lapack)
+find_package(OpenCV REQUIRED)
+include_directories(${OpenCV_INCLUDE_DIRS})
+link_directories(${OpenCV_LIBRARY_DIRS})
 
-#SET(CMAKE_BUILD_TYPE "Debug")
-#SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")
-#SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+aux_source_directory(../test/ DIR_TEST)
 
-aux_source_directory(../source/data DIR_DATA)
-aux_source_directory(../source/ops DIR_OP)
-aux_source_directory(../source/layer DIR_LAYER)
-aux_source_directory(../source/factory DIR_FAC)
-aux_source_directory(../source/runtime DIR_RUNTIME)
-aux_source_directory(../source/parser DIR_PARSER)
+set(link_lib glog::glog GTest::gtest)
+set(link_math_lib ${ARMADILLO_LIBRARIES} ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
 
-#add_executable(test_TinyTensor ${DIR_TEST} ${DIR_DATA})
-add_executable(test_TinyTensor ${DIR_TEST} ${DIR_DATA} ${DIR_OP} ${DIR_LAYER} ${DIR_FAC} ${DIR_RUNTIME} ${DIR_PARSER})
-#add_executable(test_TinyTensor test_tensor.cpp)
-link_directories(/usr/local/lib/)   
+add_executable(test_kuiper ./test_main.cpp ${DIR_TEST})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -march=native")
+
+target_link_libraries(test_TinyTensor ${OpenCV_LIBS} kuiper)
 target_link_libraries(test_TinyTensor ${link_lib} ${link_math_lib})
+target_link_directories(test_TinyTensor PUBLIC ${PROJECT_SOURCE_DIR}/lib)
+target_link_libraries(test_TinyTensor TinyTensor)
+
+target_include_directories(test_TinyTensor PUBLIC ${glog_INCLUDE_DIR})
+target_include_directories(test_TinyTensor PUBLIC ${GTest_INCLUDE_DIR})
+target_include_directories(test_TinyTensor PUBLIC ${Armadillo_INCLUDE_DIR})
+
+
