@@ -13,10 +13,10 @@ aux_source_directory(../test/ DIR_TEST)
 set(link_lib glog::glog GTest::gtest)
 set(link_math_lib ${ARMADILLO_LIBRARIES} ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
 
-add_executable(test_kuiper ./test_main.cpp ${DIR_TEST})
+add_executable(test_TinyTensor ./test_main.cpp ${DIR_TEST})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -march=native")
 
-target_link_libraries(test_TinyTensor ${OpenCV_LIBS} kuiper)
+target_link_libraries(test_TinyTensor ${OpenCV_LIBS} TinyTensor)
 target_link_libraries(test_TinyTensor ${link_lib} ${link_math_lib})
 target_link_directories(test_TinyTensor PUBLIC ${PROJECT_SOURCE_DIR}/lib)
 target_link_libraries(test_TinyTensor TinyTensor)
