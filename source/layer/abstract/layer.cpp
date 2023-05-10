@@ -1,3 +1,10 @@
+/*
+ * @Author: lihaobo
+ * @Date: 2023-05-10 01:39:47
+ * @LastEditors: lihaobo
+ * @LastEditTime: 2023-05-10 08:31:03
+ * @Description: 
+ */
 #include "layer/abstract/layer.hpp"
 namespace TinyTensor {
 
