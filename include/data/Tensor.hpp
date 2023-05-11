@@ -1,10 +1,11 @@
 /*
  * @Author: lihaobo
- * @Date: 2023-02-28 14:03:59
+ * @Date: 2023-05-10 01:39:47
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-22 19:30:23
- * @Description: 请填写简介
+ * @LastEditTime: 2023-05-11 05:31:08
+ * @Description: 
  */
+
 #ifndef TINYTENSOR_INCLUDE_TENSOR_HPP_
 #define TINYTENSOR_INCLUDE_TENSOR_HPP_
 
@@ -22,7 +23,7 @@ template <> class Tensor<float> {
 public:
   explicit Tensor() = default;
   explicit Tensor(uint32_t channels, uint32_t rows, uint32_t cols);
-
+  explicit Tensor(const std::vector<uint32_t>& shapes);
   Tensor(const Tensor &tensor);
   Tensor<float> &operator=(const Tensor &tensor);
 
@@ -64,6 +65,20 @@ public:
   void Show();
 
   void Flatten();
+  
+  /**
+   * @description: 
+   * @param {uint32_t} channel
+   * @return 返回fmat矩阵
+   */
+  arma::fmat& slice(uint32_t channel);
+
+  /**
+   * 返回张量第channel通道中的数据
+   * @param channel 需要返回的通道
+   * @return 返回的通道
+   */
+  const arma::fmat& slice(uint32_t channel) const;
 
   void ReRawshape(const std::vector<uint32_t> &shapes);
 
@@ -71,19 +86,86 @@ public:
 
   std::shared_ptr<Tensor<float>> Clone();
 
-  static std::shared_ptr<Tensor<float>>
-  ElementAdd(const std::shared_ptr<Tensor<float>> &tensor1,
-             const std::shared_ptr<Tensor<float>> &tensor2);
-
-  static std::shared_ptr<Tensor<float>>
-  ElementMul(const std::shared_ptr<Tensor<float>> &tensor1,
-             const std::shared_ptr<Tensor<float>> &tensor2);
 
 private:
   void ReView(const std::vector<uint32_t> &shapes);
   arma::fcube data_;
   std::vector<uint32_t> raw_shapes_;
 };
+
+std::tuple<std::shared_ptr<Tensor<float>>, std::shared_ptr<Tensor<float>>> TensorBroadcast(const std::shared_ptr<Tensor<float>> &s1, const std::shared_ptr<Tensor<float>> &s2);
+
+std::shared_ptr<Tensor<float>> TensorPadding(
+    const std::shared_ptr<Tensor<float>>& tensor,
+    const std::vector<uint32_t>& pads, float padding_value);
+
+/**
+ * 比较tensor的值是否相同
+ * @param a 输入张量1
+ * @param b 输入张量2
+ * @return 比较结果
+ */
+bool TensorIsSame(const std::shared_ptr<Tensor<float>>& a,
+                  const std::shared_ptr<Tensor<float>>& b);
+
+/**
+ * 张量相加
+ * @param tensor1 输入张量1
+ * @param tensor2 输入张量2
+ * @return 张量相加的结果
+ */
+std::shared_ptr<Tensor<float>> TensorElementAdd(
+    const std::shared_ptr<Tensor<float>>& tensor1,
+    const std::shared_ptr<Tensor<float>>& tensor2);
+
+/**
+ * 张量相加
+ * @param tensor1 输入张量1
+ * @param tensor2 输入张量2
+ * @param output_tensor 输出张量
+ */
+void TensorElementAdd(const std::shared_ptr<Tensor<float>>& tensor1,
+                      const std::shared_ptr<Tensor<float>>& tensor2,
+                      const std::shared_ptr<Tensor<float>>& output_tensor);
+
+/**
+ * 矩阵点乘
+ * @param tensor1 输入张量1
+ * @param tensor2 输入张量2
+ * @param output_tensor 输出张量
+ */
+void TensorElementMultiply(const std::shared_ptr<Tensor<float>>& tensor1,
+                           const std::shared_ptr<Tensor<float>>& tensor2,
+                           const std::shared_ptr<Tensor<float>>& output_tensor);
+
+/**
+ * 张量相乘
+ * @param tensor1 输入张量1
+ * @param tensor2 输入张量2
+ * @return 张量相乘的结果
+ */
+std::shared_ptr<Tensor<float>> TensorElementMultiply(
+    const std::shared_ptr<Tensor<float>>& tensor1,
+    const std::shared_ptr<Tensor<float>>& tensor2);
+
+/**
+ * 创建一个张量
+ * @param channels 通道数量
+ * @param rows 行数
+ * @param cols 列数
+ * @return 创建后的张量
+ */
+std::shared_ptr<Tensor<float>> TensorCreate(uint32_t channels, uint32_t rows,
+                                            uint32_t cols);
+
+/**
+ * 创建一个张量
+ * @param shapes 张量的形状
+ * @return 创建后的张量
+ */
+std::shared_ptr<Tensor<float>> TensorCreate(
+    const std::vector<uint32_t>& shapes);
+
 
 } // namespace TinyTensor
 

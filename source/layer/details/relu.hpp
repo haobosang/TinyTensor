@@ -2,15 +2,11 @@
  * @Author: lihaobo
  * @Date: 2023-03-06 10:04:56
  * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-09 13:45:16
+ * @LastEditTime: 2023-05-11 02:58:19
  * @Description: 请填写简介
  */
 #ifndef TINYTENSOR_INCLUDE_RELU_LAYER_HPP_
 #define TINYTENSOR_INCLUDE_RELU_LAYER_HPP_
-#include "layer.hpp"
-#include "ops/relu_op.hpp"
-
-
 
 #include "layer/abstract/layer.hpp"
 namespace TinyTensor {

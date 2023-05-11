@@ -83,5 +83,4 @@ class ExpressionParser {
   std::string statement_;
 };
 }
-
 #endif //TINYTENSOR_INFER_INCLUDE_PARSER_PARSE_EXPRESSION_HPP_

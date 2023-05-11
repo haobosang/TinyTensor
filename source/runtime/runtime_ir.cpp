@@ -486,7 +486,7 @@ void RuntimeGraph::ProbeNextLayer(
        *    输入2 -- other_op.name: other_op对应的输出空间
        * }
        */
-      std::vector<std::shared_ptr<ftensor>>& next_input_datas =
+      std::vector<std::shared_ptr<Tensor<float>>>& next_input_datas =
           next_input_operands.at(current_op->name)->datas;
       // 将当前current_op的输出赋值到next_input_datas中
       for (int i = 0; i < next_input_datas.size(); ++i) {
