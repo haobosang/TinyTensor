@@ -38,7 +38,7 @@ InferStatus ReluLayer::Forward(
     }
   }
 
-//#pragma omp parallel for num_threads(batch_size)
+#pragma omp parallel for num_threads(batch_size)
   for (uint32_t i = 0; i < batch_size; ++i) {
     const std::shared_ptr<Tensor<float>> &input = inputs.at(i);
     CHECK(input == nullptr || !input->empty())
