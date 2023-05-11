@@ -38,7 +38,7 @@ InferStatus ReluLayer::Forward(
     }
   }
 
-#pragma omp parallel for num_threads(batch_size)
+//#pragma omp parallel for num_threads(batch_size)
   for (uint32_t i = 0; i < batch_size; ++i) {
     const std::shared_ptr<Tensor<float>> &input = inputs.at(i);
     CHECK(input == nullptr || !input->empty())
@@ -55,16 +55,17 @@ InferStatus ReluLayer::Forward(
     output->set_data(input->data());
     //output->Transform([](float val) { return val > 0. ? val : 0.; });
     output->data().transform([&](float value) {
-      // 对张良中的没一个元素进行运算
+      // 对张量中的没一个元素进行运算
       // 从operator中得到存储的属性
       //x >= thresh
-      if (value >= 0.) {
+      if (value >= 0) {
         return value; // return x
       } else {
         // x<= thresh return 0.f;
         return 0.f;
       }
     });
+    
   }
   return InferStatus::kInferSuccess;
 }
