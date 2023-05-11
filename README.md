@@ -48,7 +48,7 @@ sudo make install
 ```
 ## Operators Currently Implemented
 * ReLU
-* Sigmod
+* Sigmoid
 * Conv
 ## Acknowledgement
 caffe
