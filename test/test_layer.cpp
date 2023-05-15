@@ -3,6 +3,7 @@
 #include "../source/layer/details/relu.hpp"
 #include "runtime/runtime_ir.hpp"
 #include "layer/abstract/layer.hpp"
+#include <benchmark/benchmark.h>
 TEST(test_layer, forward_relu) {
     using namespace TinyTensor;
     std::shared_ptr<Tensor<float>> input = std::make_shared<Tensor<float>>(1, 1, 3);
@@ -24,3 +25,4 @@ TEST(test_layer, forward_relu) {
     ASSERT_EQ(outputs.at(i)->index(2), 3.f);
     }
 }
+
