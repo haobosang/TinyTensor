@@ -22,7 +22,8 @@ TinyTensor supports a variety of popular neural network architectures such as co
 ### Ubuntu 18 (Debian 10)
 ```
 apt update
-apt install cmake libopenblas-dev liblapack-dev libarpack2-dev libsuperlu-dev libomp-dev libopencv-dev
+apt install cmake libopenblas-dev liblapack-dev \
+libarpack2-dev libsuperlu-dev libomp-dev libopencv-dev
 ```
 ### Install Armadillo
 ```
@@ -34,17 +35,14 @@ make install
 ```
 ### Install Benchmark
 ```
-git clone https://github.com/google/benchmark.git
-git clone https://github.com/google/googletest.git benchmark/googletest
+cd third_party
+git submodule update --init
+mv googletest benchmark
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=RELEASE ../benchmark
-make -j4
+make -j8
 # 如果想全局安装就接着运行下面的命令
 sudo make install
-```
-### Install OpenMP
-```
-
 ```
 ## Operators Currently Implemented
 * ReLU
