@@ -28,7 +28,7 @@ InferStatus ExpressionLayer::Forward(const std::vector<std::shared_ptr<Tensor<fl
   CHECK(!expressions.empty()) << "The expression in the expression layer tokenize failed!";
 
   for (uint32_t i = 0; i < inputs.size(); ++i) {
-    const sftensor &input_data = inputs.at(i);
+    const std::shared_ptr<Tensor<float>> &input_data = inputs.at(i);
     if (input_data == nullptr || input_data->empty()) {
       LOG(ERROR) << "The input feature map of expression layer is empty";
       return InferStatus::kInferFailedInputEmpty;
@@ -86,7 +86,7 @@ InferStatus ExpressionLayer::Forward(const std::vector<std::shared_ptr<Tensor<fl
   }
 
   CHECK(op_stack.size() == 1);
-  std::vector<sftensor> output_node = op_stack.top();
+  std::vector<std::shared_ptr<Tensor<float>>> output_node = op_stack.top();
   op_stack.pop();
   for (int i = 0; i < batch_size; ++i) {
     CHECK(outputs.at(i) != nullptr && !outputs.at(i)->empty());

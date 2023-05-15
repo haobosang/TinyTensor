@@ -5,9 +5,6 @@
  * @LastEditTime: 2023-03-11 14:48:28
  * @Description: 请填写简介
  */
-//
-// Created by fss on 22-11-12.
-//
 
 #ifndef TINYTENSOR_INCLUDE_COMMON_HPP_
 #define TINYTENSOR_INCLUDE_COMMON_HPP_
@@ -27,19 +24,20 @@ enum class RuntimeParameterType {
 
 enum class InferStatus {
   kInferUnknown = -1,
+  kInferSuccess = 0,
+
   kInferFailedInputEmpty = 1,
   kInferFailedWeightParameterError = 2,
   kInferFailedBiasParameterError = 3,
   kInferFailedStrideParameterError = 4,
   kInferFailedDimensionParameterError = 5,
-  kInferFailedChannelParameterError = 6,
   kInferFailedInputOutSizeAdaptingError = 6,
 
   kInferFailedOutputSizeError = 7,
-  kInferFailedOperationUnknown = 8,
-  kInferFailedYoloStageNumberError = 9,
+  kInferFailedYoloStageNumberError = 8,
+  kInferFailedShapeParameterError = 9,
+  kInferFailedChannelParameterError = 10,
 
-  kInferSuccess = 0,
 };
 
 enum class ParseParameterAttrStatus {
@@ -60,6 +58,8 @@ enum class ParseParameterAttrStatus {
   kParameterMissingGroups = 13,
   kParameterMissingScale = 14,
   kParameterMissingResizeMode = 15,
+  kParameterMissingDilation = 16,
+  kParameterMissingPaddingMode = 16,
 
   kAttrMissingBias = 21,
   kAttrMissingWeight = 22,
@@ -72,5 +72,5 @@ enum class ParseParameterAttrStatus {
 
   kParameterAttrParseSuccess = 0
 };
-}
-#endif //TINYTENSOR_INCLUDE_COMMON_HPP_
+} // namespace TinyTensor
+#endif // TINYTENSOR_INCLUDE_COMMON_HPP_

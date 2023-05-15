@@ -1,18 +1,25 @@
+/*
+ * @Author: lihaobo
+ * @Date: 2023-05-10 01:39:47
+ * @LastEditors: lihaobo
+ * @LastEditTime: 2023-05-10 08:40:30
+ * @Description: 
+ */
 #include "layer/abstract/param_layer.hpp"
 
 #include <glog/logging.h>
 
-namespace kuiper_infer {
+namespace TinyTensor {
 ParamLayer::ParamLayer(const std::string &layer_name) : Layer(layer_name) {}
 
 void ParamLayer::InitBiasParam(const uint32_t param_count,
                                const uint32_t param_channel,
                                const uint32_t param_height,
                                const uint32_t param_width) {
-  this->bias_ = std::vector<sftensor>(param_count);
+  this->bias_ = std::vector<std::shared_ptr<Tensor<float>>>(param_count);
   for (uint32_t i = 0; i < param_count; ++i) {
     this->bias_.at(i) =
-        std::make_shared<ftensor>(param_channel, param_height, param_width);
+        std::make_shared<Tensor<float>>(param_channel, param_height, param_width);
   }
 }
 
@@ -20,10 +27,10 @@ void ParamLayer::InitWeightParam(const uint32_t param_count,
                                  const uint32_t param_channel,
                                  const uint32_t param_height,
                                  const uint32_t param_width) {
-  this->weights_ = std::vector<sftensor>(param_count);
+  this->weights_ = std::vector<std::shared_ptr<Tensor<float>>>(param_count);
   for (uint32_t i = 0; i < param_count; ++i) {
     this->weights_.at(i) =
-        std::make_shared<ftensor>(param_channel, param_height, param_width);
+        std::make_shared<Tensor<float>>(param_channel, param_height, param_width);
   }
 }
 

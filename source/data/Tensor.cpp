@@ -14,6 +14,22 @@ Tensor<float>::Tensor(uint32_t channels, uint32_t rows, uint32_t cols) {
     this->raw_shapes_ = std::vector<uint32_t>{channels, rows, cols};
   }
 }
+Tensor<float>::Tensor(const std::vector<uint32_t>& shapes) {
+  CHECK(shapes.size() == 3);
+  uint32_t channels = shapes.at(0);
+  uint32_t rows = shapes.at(1);
+  uint32_t cols = shapes.at(2);
+
+  data_ = arma::fcube(rows, cols, channels);
+  if (channels == 1 && rows == 1) {
+    this->raw_shapes_ = std::vector<uint32_t>{cols};
+  } else if (channels == 1) {
+    this->raw_shapes_ = std::vector<uint32_t>{rows, cols};
+  } else {
+    this->raw_shapes_ = std::vector<uint32_t>{channels, rows, cols};
+  }
+}
+
 Tensor<float>::Tensor(const Tensor &tensor) {
   this->data_ = tensor.data_;
   this->raw_shapes_ = tensor.raw_shapes_;
@@ -138,6 +154,16 @@ void Tensor<float>::Flatten() {
   this->ReRawshape({size});
 }
 
+arma::fmat& Tensor<float>::slice(uint32_t channel) {
+  CHECK_LT(channel, this->channels());
+  return this->data_.slice(channel);
+}
+
+const arma::fmat& Tensor<float>::slice(uint32_t channel) const {
+  CHECK_LT(channel, this->channels());
+  return this->data_.slice(channel);
+}
+
 void Tensor<float>::ReRawshape(const std::vector<uint32_t> &shapes) {
   CHECK(!shapes.empty());
   const uint32_t origin_size = this->size();
@@ -225,65 +251,124 @@ void Tensor<float>::Show() {
   }
 }
 
+std::shared_ptr<Tensor<float>> TensorPadding(
+    const std::shared_ptr<Tensor<float>>& tensor,
+    const std::vector<uint32_t>& pads, float padding_value) {
+  CHECK(tensor != nullptr && !tensor->empty());
+  CHECK(pads.size() == 4);
+  uint32_t pad_rows1 = pads.at(0);  // up
+  uint32_t pad_rows2 = pads.at(1);  // bottom
+  uint32_t pad_cols1 = pads.at(2);  // left
+  uint32_t pad_cols2 = pads.at(3);  // right
+
+  std::shared_ptr<Tensor<float>> output = std::make_shared<Tensor<float>>(
+      tensor->channels(), tensor->rows() + pad_rows1 + pad_rows2,
+      tensor->cols() + pad_cols1 + pad_cols2);
+
+  if (padding_value != 0.f) output->Fill(padding_value);
+
+  const uint32_t channels = tensor->channels();
+  for (uint32_t channel = 0; channel < channels; ++channel) {
+    const arma::fmat& in_channel = tensor->slice(channel);
+    arma::fmat& output_channel = output->slice(channel);
+    const uint32_t in_channel_width = in_channel.n_cols;
+    const uint32_t in_channel_height = in_channel.n_rows;
+
+    for (uint32_t w = 0; w < in_channel_width; ++w) {
+      float* output_channel_ptr =
+          const_cast<float*>(output_channel.colptr(w + pad_cols1));
+      const float* in_channel_ptr = in_channel.colptr(w);
+      for (uint32_t h = 0; h < in_channel_height; ++h) {
+        const float value = *(in_channel_ptr + h);
+        *(output_channel_ptr + h + pad_rows1) = value;
+      }
+    }
+  }
+  return output;
+}
+
 std::shared_ptr<Tensor<float>> Tensor<float>::Clone() {
   return std::make_shared<Tensor>(*this);
 }
-std::shared_ptr<Tensor<float>>
-Tensor<float>::ElementAdd(const std::shared_ptr<Tensor<float>> &tensor1,
-                          const std::shared_ptr<Tensor<float>> &tensor2) {
-  CHECK(!tensor1->empty() && !tensor2->empty());
-  CHECK(tensor1->shapes() == tensor2->shapes())
-      << "Tensors shape are not adapting";
-  std::shared_ptr<Tensor<float>> output_tensor =
-      std::make_shared<Tensor<float>>(tensor1->channels(), tensor1->rows(),
-                                      tensor1->cols());
-  output_tensor->set_data(tensor1->data() + tensor2->data());
 
-  return output_tensor;
-}
-std::shared_ptr<Tensor<float>>
-Tensor<float>::ElementMul(const std::shared_ptr<Tensor<float>> &tensor1,
-                          const std::shared_ptr<Tensor<float>> &tensor2) {
-  CHECK(!tensor1->empty() && !tensor2->empty());
+std::shared_ptr<Tensor<float>> TensorElementAdd(
+    const std::shared_ptr<Tensor<float>>& tensor1,
+    const std::shared_ptr<Tensor<float>>& tensor2) {
+  CHECK(tensor1 != nullptr && tensor2 != nullptr);
   if (tensor1->shapes() == tensor2->shapes()) {
-    std::shared_ptr<Tensor<float>> output_tensor =
-        std::make_shared<Tensor<float>>(tensor1->channels(), tensor1->rows(),
-                                        tensor1->cols());
-    output_tensor->data_ = tensor1->data_ % tensor2->data_;
-
+    std::shared_ptr<Tensor<float>> output_tensor = TensorCreate(tensor1->shapes());
+    output_tensor->set_data(tensor1->data() + tensor2->data());
     return output_tensor;
   } else {
+    // broadcast
     CHECK(tensor1->channels() == tensor2->channels())
         << "Tensors shape are not adapting";
-    uint32_t channels = tensor1->channels();
-    std::shared_ptr<Tensor<float>> tensor1_;
-    std::shared_ptr<Tensor<float>> tensor2_;
-
-    if (tensor2->rows() == 1 && tensor2->cols() == 1) {
-      tensor1_ = tensor1;
-      tensor2_ = tensor2;
-    } else if (tensor1->rows() == 1 && tensor1->cols() == 1) {
-      tensor1_ = tensor2;
-      tensor2_ = tensor1;
-    } else {
-      LOG(FATAL) << "Tensors shape are not adapting";
-    }
-
-    const std::shared_ptr<Tensor<float>> input_tensor2_ =
-        std::make_shared<Tensor<float>>(channels, tensor1_->rows(),
-                                        tensor1_->cols());
-    for (uint32_t c = 0; c < channels; ++c) {
-      input_tensor2_->data_.slice(c).fill(tensor2_->index(c));
-    }
-    std::shared_ptr<Tensor<float>> output_tensor =
-        std::make_shared<Tensor<float>>(input_tensor2_->rows(),
-                                        input_tensor2_->cols(),
-                                        input_tensor2_->channels());
-    output_tensor->data_ = tensor1_->data_ % input_tensor2_->data_;
+    const auto& [input_tensor1, input_tensor2] =
+        TensorBroadcast(tensor1, tensor2);
+    CHECK(input_tensor1->shapes() == input_tensor2->shapes());
+    std::shared_ptr<Tensor<float>> output_tensor = TensorCreate(input_tensor1->shapes());
+    output_tensor->set_data(input_tensor1->data() + input_tensor2->data());
     return output_tensor;
   }
+}
 
-  // return output_tensor;
+
+std::shared_ptr<Tensor<float>> TensorElementMultiply(
+    const std::shared_ptr<Tensor<float>>& tensor1,
+    const std::shared_ptr<Tensor<float>>& tensor2) {
+  CHECK(tensor1 != nullptr && tensor2 != nullptr);
+  if (tensor1->shapes() == tensor2->shapes()) {
+    std::shared_ptr<Tensor<float>> output_tensor = TensorCreate(tensor1->shapes());
+    output_tensor->set_data(tensor1->data() % tensor2->data());
+    return output_tensor;
+  } else {
+    // broadcast
+    CHECK(tensor1->channels() == tensor2->channels())
+        << "Tensors shape are not adapting";
+    const auto& [input_tensor1, input_tensor2] =
+        TensorBroadcast(tensor1, tensor2);
+    CHECK(input_tensor1->shapes() == input_tensor2->shapes());
+    std::shared_ptr<Tensor<float>> output_tensor = TensorCreate(input_tensor1->shapes());
+    output_tensor->set_data(input_tensor1->data() % input_tensor2->data());
+    return output_tensor;
+  }
+}
+std::shared_ptr<Tensor<float>> TensorCreate(uint32_t channels, uint32_t rows,
+                                            uint32_t cols) {
+  return std::make_shared<Tensor<float>>(channels, rows, cols);
+}
+std::shared_ptr<Tensor<float>> TensorCreate(
+    const std::vector<uint32_t>& shapes) {
+  CHECK(shapes.size() == 3);
+  return TensorCreate(shapes.at(0), shapes.at(1), shapes.at(2));
+}
+
+std::tuple<std::shared_ptr<Tensor<float>>, std::shared_ptr<Tensor<float>>> TensorBroadcast(const std::shared_ptr<Tensor<float>>& s1,
+                                               const std::shared_ptr<Tensor<float>>& s2) {
+  CHECK(s1 != nullptr && s2 != nullptr);
+  if (s1->shapes() == s2->shapes()) {
+    return {s1, s2};
+  } else {
+    CHECK(s1->channels() == s2->channels());
+    if (s2->rows() == 1 && s2->cols() == 1) {
+      std::shared_ptr<Tensor<float>> s2_ = TensorCreate(s2->channels(), s1->rows(), s1->cols());
+      CHECK(s2->size() == s2->channels());
+      for (uint32_t c = 0; c < s2->channels(); ++c) {
+        s2_->slice(c).fill(s2->index(c));
+      }
+      return {s1, s2_};
+    } else if (s1->rows() == 1 && s1->cols() == 1) {
+      std::shared_ptr<Tensor<float>> s1_ = TensorCreate(s1->channels(), s2->rows(), s2->cols());
+      CHECK(s1->size() == s1->channels());
+      for (uint32_t c = 0; c < s1->channels(); ++c) {
+        s1_->slice(c).fill(s1->index(c));
+      }
+      return {s1_, s2};
+    } else {
+      LOG(FATAL) << "Broadcast shape is not adapting!";
+      return {s1, s2};
+    }
+  }
 }
 
 } // namespace TinyTensor

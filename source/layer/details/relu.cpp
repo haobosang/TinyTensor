@@ -1,3 +1,10 @@
+/*
+ * @Author: lihaobo
+ * @Date: 2023-05-10 01:39:47
+ * @LastEditors: lihaobo
+ * @LastEditTime: 2023-05-11 03:03:20
+ * @Description: 
+ */
 
 #include "relu.hpp"
 #include "layer/abstract/layer_factory.hpp"
@@ -17,8 +24,8 @@ InferStatus ReluLayer::Forward(
 
   const uint32_t batch_size = inputs.size();
   for (uint32_t i = 0; i < batch_size; ++i) {
-    const sftensor &input_data = inputs.at(i);
-    const sftensor &output_data = outputs.at(i);
+    const std::shared_ptr<Tensor<float>> &input_data = inputs.at(i);
+    const std::shared_ptr<Tensor<float>> &output_data = outputs.at(i);
     if (input_data == nullptr || input_data->empty()) {
       LOG(ERROR) << "The input feature map of relu layer is empty";
       return InferStatus::kInferFailedInputEmpty;
@@ -46,7 +53,19 @@ InferStatus ReluLayer::Forward(
     CHECK(output->shapes() == input->shapes())
             << "The output size of relu is error";
     output->set_data(input->data());
-    output->Transform([](float val) { return val > 0. ? val : 0.; });
+    //output->Transform([](float val) { return val > 0. ? val : 0.; });
+    output->data().transform([&](float value) {
+      // 对张量中的没一个元素进行运算
+      // 从operator中得到存储的属性
+      //x >= thresh
+      if (value >= 0) {
+        return value; // return x
+      } else {
+        // x<= thresh return 0.f;
+        return 0.f;
+      }
+    });
+    
   }
   return InferStatus::kInferSuccess;
 }
