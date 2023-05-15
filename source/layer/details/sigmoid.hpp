@@ -1,41 +1,31 @@
 /*
- * @Author: lihaobo
- * @Date: 2023-03-09 13:54:14
- * @LastEditors: lihaobo
- * @LastEditTime: 2023-03-10 10:07:26
+ * @Author: panmeng
+ * @Date: 2023-05-15 13:29:14
+ * @LastEditors: panmeng
+ * @LastEditTime: 2023-05-15 13:29:14
  * @Description: 请填写简介
  */
-#ifndef TINYTENSOR_INCLUDE_SIGMOD_LAYER_HPP_
-#define TINYTENSOR_INCLUDE_SIGMOD_LAYER_HPP_
-#include "layer.hpp"
-#include "ops/sigmod_op.hpp"
-#include "ops/op.hpp"
+
+#ifndef TINYTENSOR_INCLUDE_SIGMOID_LAYER_HPP_
+#define TINYTENSOR_INCLUDE_SIGMOID_LAYER_HPP_
+
+#include "layer/abstract/layer.hpp"
 
 namespace TinyTensor
 {
-    
-class SigmodLayer: public Layer
+/**
+ * 公共继承自 Layer 虚基类
+*/
+class SigmoidLayer: public Layer
 {
-private:
-    /* data */
-     std::shared_ptr<SigmodOperaor> _op;
 public:
-    explicit SigmodLayer(const std::shared_ptr<Operator> &op);
+    SigmoidLayer(): Layer("Sigmoid") { }
+    ~SigmoidLayer() = default;
 
-    ~SigmodLayer() = default;
-
-    void Forwards(const std::vector<std::shared_ptr<Tensor<float>>> &inputs,
-                                std::vector<std::shared_ptr<Tensor<float>>> &outputs) override;
-
-    static std::shared_ptr<Layer> CreateInstance(const std::shared_ptr<Operator> &op);
+    InferStatus Forward(const std::vector<std::shared_ptr<Tensor<float>>> &inputs, std::vector<std::shared_ptr<Tensor<float>>> &outputs) override;
+    static ParseParameterAttrStatus GetInstance(const std::shared_ptr<RuntimeOperator> &op, std::shared_ptr<Layer> &sigmoid_layer);
 };
-
-
-
 
 } // namespace TinyTensor
 
-
-
-
-#endif //TINYTENSOR_INCLUDE_SIGMOD_LAYER_HPP_
+#endif //TINYTENSOR_INCLUDE_SIGMOID_LAYER_HPP_
