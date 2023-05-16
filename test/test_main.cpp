@@ -7,8 +7,6 @@
  */
 #include <gtest/gtest.h>
 #include <glog/logging.h>
-#include <benchmark/benchmark.h>
-#include "../source/layer/details/relu.hpp"
 #include "runtime/runtime_ir.hpp"
 #include "layer/abstract/layer.hpp"
 
