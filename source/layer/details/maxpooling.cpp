@@ -98,10 +98,13 @@ InferStatus MaxPoolingLayer::Forward(const std::vector<std::shared_ptr<Tensor<fl
     for (uint32_t ic = 0; ic < input_c; ++ic) {
       const arma::fmat& input_channel = input_data_->slice(ic);
       arma::fmat& output_channel = output_data->slice(ic);
+
       for (uint32_t c = 0; c < input_w - pooling_w + 1; c += stride_w_) {
         for (uint32_t r = 0; r < input_h - pooling_h + 1; r += stride_h_) {
+
           float* output_channel_ptr = output_channel.colptr(int(c / stride_w_));
           float max_value = std::numeric_limits<float>::lowest();
+          
           for (uint32_t w = 0; w < pooling_w; ++w) {
             const float* col_ptr = input_channel.colptr(c + w) + r;
             for (uint32_t h = 0; h < pooling_h; ++h) {
