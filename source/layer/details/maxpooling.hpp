@@ -15,17 +15,29 @@ namespace TinyTensor{
         uint32_t padding_w_ = 0; // 宽度上的填充
         /* data */
     public:
-        explicit MaxPoolingLayer(uint32_t padding_h, uint32_t padding_w, uint32_t pooling_size_h,
-                  uint32_t pooling_size_w, uint32_t stride_h, uint32_t stride_w);
+        explicit MaxPoolingLayer
+        (
+            uint32_t padding_h, 
+            uint32_t padding_w, 
+            uint32_t pooling_size_h,
+            uint32_t pooling_size_w, 
+            uint32_t stride_h, 
+            uint32_t stride_w
+        );
 
-        InferStatus Forward(const std::vector<std::shared_ptr<Tensor<float>>> &inputs,
-                      std::vector<std::shared_ptr<Tensor<float>>> &outputs) override;
+        InferStatus Forward
+        (
+            const std::vector<std::shared_ptr<Tensor<float>>> &inputs,
+            std::vector<std::shared_ptr<Tensor<float>>> &outputs
+        ) override;
 
-        static ParseParameterAttrStatus GetInstance(const std::shared_ptr<RuntimeOperator> &op,
-                                              std::shared_ptr<Layer> &max_layer);
+        static ParseParameterAttrStatus GetInstance
+        (
+            const std::shared_ptr<RuntimeOperator> &op,
+            std::shared_ptr<Layer> &max_layer
+        );
     };
 
 }
-
 
 #endif //TINYTENSOR_INCLUDE_MAXPOOLING_LAYER_HPP_

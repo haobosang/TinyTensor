@@ -3,7 +3,7 @@
  * @Date: 2023-05-10 01:39:47
  * @LastEditors: lihaobo
  * @LastEditTime: 2023-05-11 05:31:08
- * @Description: 
+ * @Description:
  */
 
 #ifndef TINYTENSOR_INCLUDE_TENSOR_HPP_
@@ -13,159 +13,154 @@
 #include <memory>
 #include <vector>
 
-namespace TinyTensor {
+namespace TinyTensor
+{
 
-template <typename T> class Tensor {};
-template <> class Tensor<uint8_t> {
-  // 暂时搁置
-};
-template <> class Tensor<float> {
-public:
-  explicit Tensor() = default;
-  explicit Tensor(uint32_t channels, uint32_t rows, uint32_t cols);
-  explicit Tensor(const std::vector<uint32_t>& shapes);
-  Tensor(const Tensor &tensor);
-  Tensor<float> &operator=(const Tensor &tensor);
+    template <typename T>
+    class Tensor
+    {
+    };
 
-  uint32_t channels() const;
-  uint32_t rows() const;
-  uint32_t cols() const;
-  uint32_t size() const;
+    template <>
+    class Tensor<uint8_t>
+    {
+        // 暂时搁置
+    };
 
-  void set_data(const arma::fcube &data);
-  bool empty() const;
+    template <>
+    class Tensor<float>
+    {
+    public:
+        explicit Tensor() = default;
+        explicit Tensor(uint32_t channels, uint32_t rows, uint32_t cols);
+        explicit Tensor(const std::vector<uint32_t> &shapes);
+        Tensor(const Tensor &tensor);
+        Tensor<float> &operator=(const Tensor &tensor);
 
-  float index(uint32_t offset) const;
-  float &index(uint32_t offset);
+        uint32_t channels() const;
+        uint32_t rows() const;
+        uint32_t cols() const;
+        uint32_t size() const;
 
-  std::vector<uint32_t> shapes() const;
+        void set_data(const arma::fcube &data);
+        bool empty() const;
 
-  arma::fcube &data();
+        float index(uint32_t offset) const;
+        float &index(uint32_t offset);
 
-  const arma::fcube &data() const;
+        std::vector<uint32_t> shapes() const;
 
-  arma::fmat &at(uint32_t channel);
+        arma::fcube &data();
 
-  const arma::fmat &at(uint32_t channel) const;
+        const arma::fcube &data() const;
 
-  float at(uint32_t channel, uint32_t row, uint32_t col) const;
+        arma::fmat &at(uint32_t channel);
 
-  float &at(uint32_t channel, uint32_t row, uint32_t col);
+        const arma::fmat &at(uint32_t channel) const;
 
-  void Padding(const std::vector<uint32_t> &pads, float padding_value);
+        float at(uint32_t channel, uint32_t row, uint32_t col) const;
 
-  void Fill(float value);
+        float &at(uint32_t channel, uint32_t row, uint32_t col);
 
-  void Fill(const std::vector<float> &values);
+        void Padding(const std::vector<uint32_t> &pads, float padding_value);
 
-  void Ones();
+        void Fill(float value);
 
-  void Rand();
+        void Fill(const std::vector<float> &values);
 
-  void Show();
+        void Ones();
 
-  void Flatten();
-  
-  /**
-   * @description: 
-   * @param {uint32_t} channel
-   * @return 返回fmat矩阵
-   */
-  arma::fmat& slice(uint32_t channel);
+        void Rand();
 
-  /**
-   * 返回张量第channel通道中的数据
-   * @param channel 需要返回的通道
-   * @return 返回的通道
-   */
-  const arma::fmat& slice(uint32_t channel) const;
+        void Show();
 
-  void ReRawshape(const std::vector<uint32_t> &shapes);
+        void Flatten();
 
-  void ReRawView(const std::vector<uint32_t> &shapes);
+        /**
+         * @description:
+         * @param {uint32_t} channel
+         * @return 返回fmat矩阵
+         */
+        arma::fmat &slice(uint32_t channel);
 
-  std::shared_ptr<Tensor<float>> Clone();
+        /**
+         * 返回张量第channel通道中的数据
+         * @param channel 需要返回的通道
+         * @return 返回的通道
+         */
+        const arma::fmat &slice(uint32_t channel) const;
 
+        void ReRawshape(const std::vector<uint32_t> &shapes);
 
-private:
-  void ReView(const std::vector<uint32_t> &shapes);
-  arma::fcube data_;
-  std::vector<uint32_t> raw_shapes_;
-};
+        void ReRawView(const std::vector<uint32_t> &shapes);
 
-std::tuple<std::shared_ptr<Tensor<float>>, std::shared_ptr<Tensor<float>>> TensorBroadcast(const std::shared_ptr<Tensor<float>> &s1, const std::shared_ptr<Tensor<float>> &s2);
+        std::shared_ptr<Tensor<float>> Clone();
 
-std::shared_ptr<Tensor<float>> TensorPadding(
-    const std::shared_ptr<Tensor<float>>& tensor,
-    const std::vector<uint32_t>& pads, float padding_value);
+    private:
+        void ReView(const std::vector<uint32_t> &shapes);
+        arma::fcube data_;
+        std::vector<uint32_t> raw_shapes_;
+    };
 
-/**
- * 比较tensor的值是否相同
- * @param a 输入张量1
- * @param b 输入张量2
- * @return 比较结果
- */
-bool TensorIsSame(const std::shared_ptr<Tensor<float>>& a,
-                  const std::shared_ptr<Tensor<float>>& b);
+    std::tuple<std::shared_ptr<Tensor<float>>, std::shared_ptr<Tensor<float>>> TensorBroadcast(const std::shared_ptr<Tensor<float>> &s1, const std::shared_ptr<Tensor<float>> &s2);
 
-/**
- * 张量相加
- * @param tensor1 输入张量1
- * @param tensor2 输入张量2
- * @return 张量相加的结果
- */
-std::shared_ptr<Tensor<float>> TensorElementAdd(
-    const std::shared_ptr<Tensor<float>>& tensor1,
-    const std::shared_ptr<Tensor<float>>& tensor2);
+    std::shared_ptr<Tensor<float>> TensorPadding(const std::shared_ptr<Tensor<float>> &tensor, const std::vector<uint32_t> &pads, float padding_value);
 
-/**
- * 张量相加
- * @param tensor1 输入张量1
- * @param tensor2 输入张量2
- * @param output_tensor 输出张量
- */
-void TensorElementAdd(const std::shared_ptr<Tensor<float>>& tensor1,
-                      const std::shared_ptr<Tensor<float>>& tensor2,
-                      const std::shared_ptr<Tensor<float>>& output_tensor);
+    /**
+     * 比较tensor的值是否相同
+     * @param a 输入张量1
+     * @param b 输入张量2
+     * @return 比较结果
+     */
+    bool TensorIsSame(const std::shared_ptr<Tensor<float>> &a, const std::shared_ptr<Tensor<float>> &b);
 
-/**
- * 矩阵点乘
- * @param tensor1 输入张量1
- * @param tensor2 输入张量2
- * @param output_tensor 输出张量
- */
-void TensorElementMultiply(const std::shared_ptr<Tensor<float>>& tensor1,
-                           const std::shared_ptr<Tensor<float>>& tensor2,
-                           const std::shared_ptr<Tensor<float>>& output_tensor);
+    /**
+     * 张量相加
+     * @param tensor1 输入张量1
+     * @param tensor2 输入张量2
+     * @return 张量相加的结果
+     */
+    std::shared_ptr<Tensor<float>> TensorElementAdd(const std::shared_ptr<Tensor<float>> &tensor1, const std::shared_ptr<Tensor<float>> &tensor2);
 
-/**
- * 张量相乘
- * @param tensor1 输入张量1
- * @param tensor2 输入张量2
- * @return 张量相乘的结果
- */
-std::shared_ptr<Tensor<float>> TensorElementMultiply(
-    const std::shared_ptr<Tensor<float>>& tensor1,
-    const std::shared_ptr<Tensor<float>>& tensor2);
+    /**
+     * 张量相加
+     * @param tensor1 输入张量1
+     * @param tensor2 输入张量2
+     * @param output_tensor 输出张量
+     */
+    void TensorElementAdd(const std::shared_ptr<Tensor<float>> &tensor1, const std::shared_ptr<Tensor<float>> &tensor2, const std::shared_ptr<Tensor<float>> &output_tensor);
 
-/**
- * 创建一个张量
- * @param channels 通道数量
- * @param rows 行数
- * @param cols 列数
- * @return 创建后的张量
- */
-std::shared_ptr<Tensor<float>> TensorCreate(uint32_t channels, uint32_t rows,
-                                            uint32_t cols);
+    /**
+     * 矩阵点乘
+     * @param tensor1 输入张量1
+     * @param tensor2 输入张量2
+     * @param output_tensor 输出张量
+     */
+    void TensorElementMultiply(const std::shared_ptr<Tensor<float>> &tensor1, const std::shared_ptr<Tensor<float>> &tensor2, const std::shared_ptr<Tensor<float>> &output_tensor);
 
-/**
- * 创建一个张量
- * @param shapes 张量的形状
- * @return 创建后的张量
- */
-std::shared_ptr<Tensor<float>> TensorCreate(
-    const std::vector<uint32_t>& shapes);
+    /**
+     * 张量相乘
+     * @param tensor1 输入张量1
+     * @param tensor2 输入张量2
+     * @return 张量相乘的结果
+     */
+    std::shared_ptr<Tensor<float>> TensorElementMultiply(const std::shared_ptr<Tensor<float>> &tensor1, const std::shared_ptr<Tensor<float>> &tensor2);
 
+    /**
+     * 创建一个张量
+     * @param channels 通道数量
+     * @param rows 行数
+     * @param cols 列数
+     * @return 创建后的张量
+     */
+    std::shared_ptr<Tensor<float>> TensorCreate(uint32_t channels, uint32_t rows, uint32_t cols);
+
+    /**
+     * 创建一个张量
+     * @param shapes 张量的形状
+     * @return 创建后的张量
+     */
+    std::shared_ptr<Tensor<float>> TensorCreate(const std::vector<uint32_t> &shapes);
 
 } // namespace TinyTensor
 

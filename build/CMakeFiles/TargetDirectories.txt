@@ -1,0 +1,8 @@
+/home/pm/Desktop/TinyTensor/build/CMakeFiles/rebuild_cache.dir
+/home/pm/Desktop/TinyTensor/build/CMakeFiles/edit_cache.dir
+/home/pm/Desktop/TinyTensor/build/CMakeFiles/test.dir
+/home/pm/Desktop/TinyTensor/build/CMakeFiles/TinyTensor.dir
+/home/pm/Desktop/TinyTensor/build/test/CMakeFiles/rebuild_cache.dir
+/home/pm/Desktop/TinyTensor/build/test/CMakeFiles/edit_cache.dir
+/home/pm/Desktop/TinyTensor/build/test/CMakeFiles/test.dir
+/home/pm/Desktop/TinyTensor/build/test/CMakeFiles/test_TinyTensor.dir
