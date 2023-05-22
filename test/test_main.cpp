@@ -35,8 +35,8 @@ int main(int argc, char *argv[]) {
      // 要注册所有 benchmark 测试      
     //benchmark_register_all_functions();
     // 注册benchmark测试      
-    benchmark::Initialize(&argc, argv);
-    benchmark::RunSpecifiedBenchmarks();
+    // benchmark::Initialize(&argc, argv);
+    // benchmark::RunSpecifiedBenchmarks();
 
 
     LOG(INFO) << "Start test...\n";

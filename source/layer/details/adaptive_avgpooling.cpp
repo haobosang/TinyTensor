@@ -1,4 +1,4 @@
-#include "layer/details/adaptive_avgpooling.hpp"
+#include "adaptive_avgpooling.hpp"
 #include "layer/abstract/layer_factory.hpp"
 #include "runtime/runtime_ir.hpp"
 namespace  TinyTensor
