@@ -47,11 +47,12 @@ std::shared_ptr<Tensor<float>> PreProcessImage(const cv::Mat& image) {
   input->slice(2) = (input->slice(2) - mean_b) / var_b;
   return input;
 }
-TEST(test_model, resnet) {
+TEST(test_initinoutput, init_init_graph) {
   using namespace TinyTensor;
-  const std::string& param_path = "./tmp/resnet18_batch1.pnnx.param";
-  const std::string& weight_path = "./tmp/resnet18_batch1.pnnx.bin";
-  RuntimeGraph graph(param_path, weight_path);
+  const std::string &param_path = "../../tmp/resnet18_batch1.pnnx.param";
+  const std::string &bin_path = "../../tmp/resnet18_batch1.pnnx.bin";
+  std::cout<<param_path;
+  RuntimeGraph graph(param_path, bin_path);
   graph.Build("pnnx_input_0", "pnnx_output_0");
   LOG(INFO) << "Start kuiperInfer inference";
   std::shared_ptr<Tensor<float>> input1 =
@@ -61,14 +62,16 @@ TEST(test_model, resnet) {
   std::vector<std::shared_ptr<Tensor<float>>> inputs;
   inputs.push_back(input1);
 
+
   std::vector<std::shared_ptr<Tensor<float>>> outputs =
       graph.Forward(inputs, false);
   ASSERT_EQ(outputs.size(), 1);
 
-  const auto &output2 = CSVDataLoader::LoadData("./tmp/out.csv");
+  const auto &output2 = CSVDataLoader::LoadData("../../tmp/out.csv");
   const auto &output1 = outputs.front()->data().slice(0);
   ASSERT_EQ(output1.size(), output2.size());
   for (uint32_t s = 0; s < output1.size(); ++s) {
     ASSERT_LE(std::abs(output1.at(s) - output2.at(s)), 1e-5);
   }
 }
+ 
