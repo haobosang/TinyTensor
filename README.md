@@ -48,5 +48,6 @@ sudo make install
 * ReLU
 * Sigmoid
 * Conv
+* MaxPooling
 ## Acknowledgement
 caffe
