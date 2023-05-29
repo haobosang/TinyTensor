@@ -1,4 +1,4 @@
-#include "layer/details/maxpooling.hpp"
+#include "maxpooling.hpp"
 #include "layer/abstract/layer_factory.hpp"
 #include "runtime/runtime_ir.hpp"
 

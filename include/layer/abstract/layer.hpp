@@ -35,8 +35,11 @@ namespace TinyTensor
          * @param outputs 层的输出
          * @return 执行的状态
          */
-        virtual InferStatus
-        Forward(const std::vector<std::shared_ptr<Tensor<float>>> &inputs, std::vector<std::shared_ptr<Tensor<float>>> &outputs);
+        virtual InferStatus Forward
+        (
+            const std::vector<std::shared_ptr<Tensor<float>>> &inputs, 
+            std::vector<std::shared_ptr<Tensor<float>>> &outputs
+        );
 
         /**
          * 返回层的权重
@@ -50,8 +53,7 @@ namespace TinyTensor
          */
         virtual const std::vector<std::shared_ptr<Tensor<float>>> &bias() const;
 
-        virtual void
-        set_weights(const std::vector<std::shared_ptr<Tensor<float>>> &weights);
+        virtual void set_weights(const std::vector<std::shared_ptr<Tensor<float>>> &weights);
 
         /**
          * 设置Layer的偏移量
