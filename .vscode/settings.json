@@ -80,6 +80,12 @@
         "ios": "cpp",
         "locale": "cpp",
         "queue": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "csetjmp": "cpp",
+        "csignal": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "unordered_set": "cpp",
+        "regex": "cpp"
     }
 }

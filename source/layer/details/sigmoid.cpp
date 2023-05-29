@@ -61,14 +61,14 @@ InferStatus SigmoidLayer::Forward(const std::vector<std::shared_ptr<Tensor<float
         }
         CHECK(output_batch->shapes() == input_batch->shapes()) << "The output size of sigmoid is error";
         output_batch->set_data(input_batch->data());
-        // output_batch->data().transform(
-        //     [&](float value) {
-        //         return 1 / (1 + std::exp(-value));
-        //     }
-        // );  // Tensor.data() 返回的是 arma::fcube 类型的数据. transform 数据变换需要传入变换函数
-        for (float& value : output_batch->data()) {
-            value = 1 / (1 + exp(-value));
-        }
+        output_batch->data().transform(
+            [&](float value) {
+                return 1 / (1 + std::exp(-value));
+            }
+        );  // Tensor.data() 返回的是 arma::fcube 类型的数据. transform 数据变换需要传入变换函数
+        // for (float& value : output_batch->data()) {
+        //     value = 1 / (1 + exp(-value));
+        // }
     }
 
     return InferStatus::kInferSuccess;
