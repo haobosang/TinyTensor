@@ -26,3 +26,5 @@ target_include_directories(test_TinyTensor PUBLIC ${benchmark_INCLUDE_DIRS})
 target_include_directories(test_TinyTensor PUBLIC ${glog_INCLUDE_DIR})
 target_include_directories(test_TinyTensor PUBLIC ${GTest_INCLUDE_DIR})
 target_include_directories(test_TinyTensor PUBLIC ${Armadillo_INCLUDE_DIR})
+
+set(CMAKE_BUILD_TYPE Debug)
