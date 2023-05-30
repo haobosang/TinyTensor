@@ -54,7 +54,7 @@ TEST(test_initinoutput, init_init_graph) {
   std::cout<<param_path;
   RuntimeGraph graph(param_path, bin_path);
   graph.Build("pnnx_input_0", "pnnx_output_0");
-  LOG(INFO) << "Start kuiperInfer inference";
+  LOG(INFO) << "Start TinyTensor inference";
   std::shared_ptr<Tensor<float>> input1 =
       std::make_shared<Tensor<float>>(3, 224, 224);
   input1->Fill(1.);
