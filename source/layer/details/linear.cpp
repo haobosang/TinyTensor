@@ -44,7 +44,7 @@ InferStatus LinearLayer::Forward(const std::vector<std::shared_ptr<Tensor<float>
     } 
     else 
     {
-        if (this->use_bias_ && this->weights_.size != this->bias_.size()) // 偏置与权重尺寸不匹配
+        if (this->use_bias_ && this->weights_.size() != this->bias_.size()) // 偏置与权重尺寸不匹配
         {
             LOG(ERROR) << "The size of the weight and bias tensor do not match";
             return InferStatus::kInferFailedBiasParameterError;
@@ -63,12 +63,12 @@ InferStatus LinearLayer::Forward(const std::vector<std::shared_ptr<Tensor<float>
         return InferStatus::kInferFailedBiasParameterError;
     }
 
-    uint32_t batch_size inputs.size();
+    uint32_t batch_size = inputs.size();
     const std::shared_ptr<Tensor<float>>& weight = this->weights_.front(); // 第一个 batch 的权重
 
     /* ?? */
-    arma::fmat weight_data(weight->raw_ptr(), this->out_features_, this->in_features_, false, true);
-    const arma::fmat& weigth_data_t = weight_data.t();
+    arma::fmat weight_data(weight->data().memptr() , this->out_features_, this->in_features_, false, true);
+    const arma::fmat& weight_data_t = weight_data.t();
 
 #pragma omp parallel for num_threads(batch_size) // batch 并行
     for (uint32_t i = 0; i < batch_size; ++i)
@@ -84,7 +84,7 @@ InferStatus LinearLayer::Forward(const std::vector<std::shared_ptr<Tensor<float>
         CHECK(weight_data.n_cols == in_features && in_features == this->in_features_) << "The col of weoght tensor should be same to input_feature_";
 
         /* 根据 input 数据，按列创建矩阵对象 */
-        arma::fmat input_vec((float*)input->raw_ptr(), feature_dims, this->in_features_, false, true);
+        arma::fmat input_vec((float*)input->data().memptr(), feature_dims, this->in_features_, false, true);
 
         std::shared_ptr<Tensor<float>> output = outputs.at(i);
         if (output == nullptr || output->empty()) // 输出不能为空
