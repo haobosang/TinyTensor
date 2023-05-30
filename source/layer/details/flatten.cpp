@@ -36,9 +36,9 @@ InferStatus FlattenLayer::Forward(const std::vector<std::shared_ptr<Tensor<float
         return InferStatus::kInferFailedInputOutSizeAdaptingError;
     }
 
-    uint32_t start_dim = this->start_dim_;  // 获取开始维度
-    uint32_t end_dim = this->end_dim_;      // 获取结束维度
-    const uint32_t total_dims = 4;          // 总维度为 4
+    int32_t start_dim = this->start_dim_;  // 获取开始维度
+    int32_t end_dim = this->end_dim_;      // 获取结束维度
+    const int32_t total_dims = 4;          // 总维度为 4
 
     if (start_dim < 0) // 开始维度为负数的情况，从后往前数
     {
