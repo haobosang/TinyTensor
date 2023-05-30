@@ -1,7 +1,8 @@
 #include "data/Tensor.hpp"
 #include <glog/logging.h>
 #include <memory>
-
+#include <numeric>
+#include <functional>
 namespace TinyTensor
 {
 
@@ -42,6 +43,24 @@ Tensor<float>::Tensor(const std::vector<uint32_t> &shapes)
     {
         this->raw_shapes_ = std::vector<uint32_t>{channels, rows, cols};
     }
+}
+
+float* Tensor<float>::raw_ptr() {
+  //CHECK(!this->data_.empty());
+  return this->data_.memptr();
+}
+
+float* Tensor<float>::raw_ptr(uint32_t offset) {
+  const uint32_t size = this->size();
+  //CHECK(!this->data_.empty());
+  //CHECK_LT(offset, size);
+  return this->data_.memptr() + offset;
+}
+
+float* Tensor<float>::matrix_raw_ptr(uint32_t index) {
+  //CHECK_LT(index, this->channels());
+  float* mem_ptr = this->raw_ptr() + index * this->rows() * this->cols();
+  return mem_ptr;
 }
 
 Tensor<float>::Tensor(const Tensor &tensor)
@@ -152,6 +171,27 @@ void Tensor<float>::Fill(float value)
     this->data_.fill(value);
 }
 
+// void Tensor<float>::Fill(const std::vector<float>& values, bool row_major) {
+//   CHECK(!this->data_.empty());
+//   const uint32_t total_elems = this->data_.size();
+//   CHECK_EQ(values.size(), total_elems);
+//   if (row_major) {
+//     const uint32_t rows = this->rows();
+//     const uint32_t cols = this->cols();
+//     const uint32_t planes = rows * cols;
+//     const uint32_t channels = this->data_.n_slices;
+
+//     for (uint32_t i = 0; i < channels; ++i) {
+//       auto& channel_data = this->data_.slice(i);
+//       const arma::fmat& channel_data_t =
+//           arma::fmat(values.data() + i * planes, this->cols(), this->rows());
+//       channel_data = channel_data_t.t();
+//     }
+//   } else {
+//     std::copy(values.begin(), values.end(), this->data_.memptr());
+//   }
+// }
+
 void Tensor<float>::Padding(const std::vector<uint32_t> &pads, float padding_value)
 {
     CHECK(!this->data_.empty());
@@ -206,6 +246,36 @@ const arma::fmat &Tensor<float>::slice(uint32_t channel) const
     return this->data_.slice(channel);
 }
 
+// void Tensor<float>::Reshape(const std::vector<uint32_t>& shapes,
+//                             bool row_major) {
+//   CHECK(!this->data_.empty());
+//   CHECK(!shapes.empty());
+//   const uint32_t origin_size = this->size();
+//   const uint32_t current_size =
+//       std::accumulate(shapes.begin(), shapes.end(), 1, std::multiplies());
+//   CHECK(shapes.size() <= 3);
+//   CHECK(current_size == origin_size);
+
+//   std::vector<float> values;
+//   if (row_major) {
+//     values = this->values(true);
+//   }
+//   if (shapes.size() == 3) {
+//     this->data_.reshape(shapes.at(1), shapes.at(2), shapes.at(0));
+//     this->raw_shapes_ = {shapes.at(0), shapes.at(1), shapes.at(2)};
+//   } else if (shapes.size() == 2) {
+//     this->data_.reshape(shapes.at(0), shapes.at(1), 1);
+//     this->raw_shapes_ = {shapes.at(0), shapes.at(1)};
+//   } else {
+//     this->data_.reshape(1, shapes.at(0), 1);
+//     this->raw_shapes_ = {shapes.at(0)};
+//   }
+
+//   if (row_major) {
+//     this->Fill(values, true);
+//   }
+// }
+
 void Tensor<float>::ReRawshape(const std::vector<uint32_t> &shapes)
 {
     CHECK(!shapes.empty());
@@ -233,7 +303,11 @@ void Tensor<float>::ReRawshape(const std::vector<uint32_t> &shapes)
         this->data_.reshape(shapes.at(0), 1, 1);
         this->raw_shapes_ = {shapes.at(0)};
     }
+
+
 }
+
+
 
 void Tensor<float>::ReRawView(const std::vector<uint32_t> &shapes)
 {
@@ -306,6 +380,10 @@ void Tensor<float>::Rand()
     return;
 }
 
+const std::vector<uint32_t>& Tensor<float>::raw_shapes() const {
+  CHECK(!this->raw_shapes_.empty());
+  return this->raw_shapes_;
+}
 void Tensor<float>::Show()
 {
     for (uint32_t i = 0; i < this->channels(); ++i)
@@ -411,6 +489,11 @@ std::shared_ptr<Tensor<float>> TensorCreate(const std::vector<uint32_t> &shapes)
     return TensorCreate(shapes.at(0), shapes.at(1), shapes.at(2));
 }
 
+std::shared_ptr<Tensor<float>> TensorClone(
+    std::shared_ptr<Tensor<float>> tensor) {
+  return std::make_shared<Tensor<float>>(*tensor);
+}
+
 std::tuple<std::shared_ptr<Tensor<float>>, std::shared_ptr<Tensor<float>>> TensorBroadcast
 (
     const std::shared_ptr<Tensor<float>> &s1, 
@@ -452,5 +535,6 @@ std::tuple<std::shared_ptr<Tensor<float>>, std::shared_ptr<Tensor<float>>> Tenso
         }
     }
 }
+
 
 } // namespace TinyTensor

@@ -78,6 +78,7 @@ public:
     const arma::fmat &at(uint32_t channel) const;
     float at(uint32_t channel, uint32_t row, uint32_t col) const;
     float &at(uint32_t channel, uint32_t row, uint32_t col);
+    const std::vector<uint32_t> &raw_shapes() const;
 
     /**
      * padding 操作
@@ -88,7 +89,15 @@ public:
      * 初始化填值
     */
     void Fill(float value);
+
     void Fill(const std::vector<float> &values);
+
+    /**
+     * 使用values中的数据初始化张量
+     * @param values 用来初始化张量的数据
+     */
+    //void Fill(const std::vector<float>& values, bool row_major = true);
+
     void Ones();
     void Rand();
 
@@ -131,6 +140,20 @@ public:
      * 复制一个新的 Tensor
     */
     std::shared_ptr<Tensor<float>> Clone();
+
+    std::vector<float> values(bool row_major = true);
+
+    float* raw_ptr();
+
+    float* raw_ptr(uint32_t offset);
+
+    void Reshape(const std::vector<uint32_t>& shapes, bool row_major = false);
+  /**
+   * 返回第index个矩阵的起始地址
+   * @param index 第index个矩阵
+   * @return 第index个矩阵的起始地址
+   */
+    float* matrix_raw_ptr(uint32_t index);
 
 private:
     void ReView(const std::vector<uint32_t> &shapes);
@@ -197,6 +220,9 @@ std::shared_ptr<Tensor<float>> TensorCreate(uint32_t channels, uint32_t rows, ui
  * @return 创建后的张量
  */
 std::shared_ptr<Tensor<float>> TensorCreate(const std::vector<uint32_t> &shapes);
+
+std::shared_ptr<Tensor<float>> TensorClone(
+    std::shared_ptr<Tensor<float>> tensor);
 
 } // namespace TinyTensor
 
