@@ -67,7 +67,7 @@ InferStatus LinearLayer::Forward(const std::vector<std::shared_ptr<Tensor<float>
     const std::shared_ptr<Tensor<float>>& weight = this->weights_.front(); // 第一个 batch 的权重
 
     /* ?? */
-    arma::fmat weight_data(weight->data().memptr() , this->out_features_, this->in_features_, false, true);
+    arma::fmat weight_data(weight->data().memptr(), this->out_features_, this->in_features_, false, true);
     const arma::fmat& weight_data_t = weight_data.t();
 
 #pragma omp parallel for num_threads(batch_size) // batch 并行
@@ -81,7 +81,7 @@ InferStatus LinearLayer::Forward(const std::vector<std::shared_ptr<Tensor<float>
         const uint32_t feature_dims = input_shapes.at(1);   // c
         const uint32_t in_features = input_shapes.at(2);    // h
         CHECK(weight_data.n_rows == this->out_features_) << "The row of weight tensor should be same to output_feature_";
-        CHECK(weight_data.n_cols == in_features && in_features == this->in_features_) << "The col of weoght tensor should be same to input_feature_";
+        CHECK(weight_data.n_cols == in_features && in_features == this->in_features_) << "The col of weight tensor should be same to input_features_";
 
         /* 根据 input 数据，按列创建矩阵对象 */
         arma::fmat input_vec((float*)input->data().memptr(), feature_dims, this->in_features_, false, true);
