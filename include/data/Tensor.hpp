@@ -90,7 +90,11 @@ public:
     */
     void Fill(float value);
 
-    void Fill(const std::vector<float> &values);
+    void Fill(const std::vector<float>& values, bool row_major = true);
+
+    std::vector<float> values(bool row_major = true);
+
+   // void Fill(const std::vector<float> &values);
 
     /**
      * 使用values中的数据初始化张量
@@ -141,7 +145,7 @@ public:
     */
     std::shared_ptr<Tensor<float>> Clone();
 
-    std::vector<float> values(bool row_major = true);
+    //std::vector<float> values(bool row_major = true);
 
     float* raw_ptr();
 

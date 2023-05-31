@@ -171,26 +171,45 @@ void Tensor<float>::Fill(float value)
     this->data_.fill(value);
 }
 
-// void Tensor<float>::Fill(const std::vector<float>& values, bool row_major) {
-//   CHECK(!this->data_.empty());
-//   const uint32_t total_elems = this->data_.size();
-//   CHECK_EQ(values.size(), total_elems);
-//   if (row_major) {
-//     const uint32_t rows = this->rows();
-//     const uint32_t cols = this->cols();
-//     const uint32_t planes = rows * cols;
-//     const uint32_t channels = this->data_.n_slices;
+std::vector<float> Tensor<float>::values(bool row_major) {
+  CHECK_EQ(this->data_.empty(), false);
+  std::vector<float> values(this->data_.size());
 
-//     for (uint32_t i = 0; i < channels; ++i) {
-//       auto& channel_data = this->data_.slice(i);
-//       const arma::fmat& channel_data_t =
-//           arma::fmat(values.data() + i * planes, this->cols(), this->rows());
-//       channel_data = channel_data_t.t();
-//     }
-//   } else {
-//     std::copy(values.begin(), values.end(), this->data_.memptr());
-//   }
-// }
+  if (!row_major) {
+    std::copy(this->data_.mem, this->data_.mem + this->data_.size(),
+              values.begin());
+  } else {
+    uint32_t index = 0;
+    for (uint32_t c = 0; c < this->data_.n_slices; ++c) {
+      const arma::fmat& channel = this->data_.slice(c).t();
+      std::copy(channel.begin(), channel.end(), values.begin() + index);
+      index += channel.size();
+    }
+    CHECK_EQ(index, values.size());
+  }
+  return values;
+}
+
+void Tensor<float>::Fill(const std::vector<float>& values, bool row_major) {
+  CHECK(!this->data_.empty());
+  const uint32_t total_elems = this->data_.size();
+  CHECK_EQ(values.size(), total_elems);
+  if (row_major) {
+    const uint32_t rows = this->rows();
+    const uint32_t cols = this->cols();
+    const uint32_t planes = rows * cols;
+    const uint32_t channels = this->data_.n_slices;
+
+    for (uint32_t i = 0; i < channels; ++i) {
+      auto& channel_data = this->data_.slice(i);
+      const arma::fmat& channel_data_t =
+          arma::fmat(values.data() + i * planes, this->cols(), this->rows());
+      channel_data = channel_data_t.t();
+    }
+  } else {
+    std::copy(values.begin(), values.end(), this->data_.memptr());
+  }
+}
 
 void Tensor<float>::Padding(const std::vector<uint32_t> &pads, float padding_value)
 {
@@ -208,24 +227,26 @@ void Tensor<float>::Padding(const std::vector<uint32_t> &pads, float padding_val
     this->raw_shapes_ = this->shapes();
 }
 
-void Tensor<float>::Fill(const std::vector<float> &values)
-{
-    CHECK(!this->data_.empty());
-    const uint32_t total_elems = this->data_.size();
-    CHECK_EQ(values.size(), total_elems);
+// void Tensor<float>::Fill(const std::vector<float> &values)
+// {
+//     CHECK(!this->data_.empty());
+//     const uint32_t total_elems = this->data_.size();
+//     CHECK_EQ(values.size(), total_elems);
 
-    const uint32_t rows = this->rows();
-    const uint32_t cols = this->cols();
-    const uint32_t planes = rows * cols;
-    const uint32_t channels = this->data_.n_slices;
+//     const uint32_t rows = this->rows();
+//     const uint32_t cols = this->cols();
+//     const uint32_t planes = rows * cols;
+//     const uint32_t channels = this->data_.n_slices;
 
-    for (uint32_t i = 0; i < channels; ++i)
-    {
-        auto &channel_data = this->data_.slice(i);
-        const arma::fmat &channel_data_t = arma::fmat(values.data() + i * planes, this->cols(), this->rows());
-        channel_data = channel_data_t.t();
-    }
-}
+//     for (uint32_t i = 0; i < channels; ++i)
+//     {
+//         auto &channel_data = this->data_.slice(i);
+//         const arma::fmat &channel_data_t = arma::fmat(values.data() + i * planes, this->cols(), this->rows());
+//         channel_data = channel_data_t.t();
+//     }
+// }
+
+
 
 void Tensor<float>::Flatten()
 {
@@ -246,35 +267,35 @@ const arma::fmat &Tensor<float>::slice(uint32_t channel) const
     return this->data_.slice(channel);
 }
 
-// void Tensor<float>::Reshape(const std::vector<uint32_t>& shapes,
-//                             bool row_major) {
-//   CHECK(!this->data_.empty());
-//   CHECK(!shapes.empty());
-//   const uint32_t origin_size = this->size();
-//   const uint32_t current_size =
-//       std::accumulate(shapes.begin(), shapes.end(), 1, std::multiplies());
-//   CHECK(shapes.size() <= 3);
-//   CHECK(current_size == origin_size);
+void Tensor<float>::Reshape(const std::vector<uint32_t>& shapes,
+                            bool row_major) {
+  CHECK(!this->data_.empty());
+  CHECK(!shapes.empty());
+  const uint32_t origin_size = this->size();
+  const uint32_t current_size =
+      std::accumulate(shapes.begin(), shapes.end(), 1, std::multiplies());
+  CHECK(shapes.size() <= 3);
+  CHECK(current_size == origin_size);
 
-//   std::vector<float> values;
-//   if (row_major) {
-//     values = this->values(true);
-//   }
-//   if (shapes.size() == 3) {
-//     this->data_.reshape(shapes.at(1), shapes.at(2), shapes.at(0));
-//     this->raw_shapes_ = {shapes.at(0), shapes.at(1), shapes.at(2)};
-//   } else if (shapes.size() == 2) {
-//     this->data_.reshape(shapes.at(0), shapes.at(1), 1);
-//     this->raw_shapes_ = {shapes.at(0), shapes.at(1)};
-//   } else {
-//     this->data_.reshape(1, shapes.at(0), 1);
-//     this->raw_shapes_ = {shapes.at(0)};
-//   }
+  std::vector<float> values;
+  if (row_major) {
+    values = this->values(true);
+  }
+  if (shapes.size() == 3) {
+    this->data_.reshape(shapes.at(1), shapes.at(2), shapes.at(0));
+    this->raw_shapes_ = {shapes.at(0), shapes.at(1), shapes.at(2)};
+  } else if (shapes.size() == 2) {
+    this->data_.reshape(shapes.at(0), shapes.at(1), 1);
+    this->raw_shapes_ = {shapes.at(0), shapes.at(1)};
+  } else {
+    this->data_.reshape(1, shapes.at(0), 1);
+    this->raw_shapes_ = {shapes.at(0)};
+  }
 
-//   if (row_major) {
-//     this->Fill(values, true);
-//   }
-// }
+  if (row_major) {
+    this->Fill(values, true);
+  }
+}
 
 void Tensor<float>::ReRawshape(const std::vector<uint32_t> &shapes)
 {
