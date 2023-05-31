@@ -71,10 +71,10 @@ InferStatus LinearLayer::Forward(const std::vector<std::shared_ptr<Tensor<float>
     const std::vector<uint32_t>& input_shapes = input->shapes();
 
     const uint32_t feature_dims = input_shapes.at(1);
-    std::cout<<"feature_dims;"<<feature_dims<<std::endl;
+    //std::cout<<"feature_dims;"<<feature_dims<<std::endl;
     const uint32_t in_features = input_shapes.at(2);
-    std::cout<<"weight_data.n_cols ;"<<weight_data.n_cols <<std::endl;
-    std::cout<<"in_features;"<<in_features<<std::endl;
+    //std::cout<<"weight_data.n_cols ;"<<weight_data.n_cols <<std::endl;
+    //std::cout<<"in_features;"<<in_features<<std::endl;
     CHECK(weight_data.n_rows == out_features_)
         << "The row of weight tensor should be same to output_features_";
     CHECK(weight_data.n_cols == in_features && in_features == in_features_)
@@ -88,6 +88,10 @@ InferStatus LinearLayer::Forward(const std::vector<std::shared_ptr<Tensor<float>
       output = std::make_shared<Tensor<float>>(1, out_features_, feature_dims);
       outputs.at(i) = output;
     }
+
+
+   
+
     CHECK(output->channels() == 1 && output->rows() == feature_dims &&
           output->cols() == out_features_)
         << "The row of output tensor should be same to feature_dims_ and the"
