@@ -51,7 +51,6 @@ TEST(test_initinoutput, init_init_graph) {
   using namespace TinyTensor;
   const std::string &param_path = "../../tmp/test.pnnx.param";
   const std::string &bin_path = "../../tmp/test.pnnx.bin";
-  std::cout<<param_path;
   RuntimeGraph graph(param_path, bin_path);
   graph.Build("pnnx_input_0", "pnnx_output_0");
   LOG(INFO) << "Start TinyTensor inference";
@@ -77,7 +76,6 @@ TEST(test_initinoutput, init_init_graph1) {
   using namespace TinyTensor;
   const std::string &param_path = "../../tmp/resnet18_batch1.pnnx.param";
   const std::string &bin_path = "../../tmp/resnet18_batch1.pnnx.bin";
-  std::cout<<param_path;
   RuntimeGraph graph(param_path, bin_path);
   graph.Build("pnnx_input_0", "pnnx_output_0");
   LOG(INFO) << "Start TinyTensor inference";
@@ -93,9 +91,50 @@ TEST(test_initinoutput, init_init_graph1) {
       graph.Forward(inputs, false);
   ASSERT_EQ(outputs.size(), 1);
   
-  const auto &output1 = outputs.front()->shapes();
-  for(auto it:output1){
-    std::cout<<it<<" ";
+  const auto &output2 = CSVDataLoader::LoadData("../../tmp/out.csv");
+  const auto &output1 = outputs.front()->data().slice(0);
+  ASSERT_EQ(output1.size(), output2.size());
+  for (uint32_t s = 0; s < output1.size(); ++s) {
+    ASSERT_LE(std::abs(output1.at(s) - output2.at(s)), 1e-5);
+  }
+}
+TEST(test_model, resnet_classify_demo) {
+  std::string path = "../../tmp/dog.jpg";
+  cv::Mat image = cv::imread(path);
+  // 图像预处理
+  std::shared_ptr<Tensor<float>> input = PreProcessImage(image);
+
+  std::vector<std::shared_ptr<Tensor<float>>> inputs;
+  inputs.push_back(input);
+
+  const std::string& param_path = "../../tmp/resnet18_batch1.pnnx.param";
+  const std::string& weight_path = "../../tmp/resnet18_batch1.pnnx.bin";
+  RuntimeGraph graph(param_path, weight_path);
+  graph.Build("pnnx_input_0", "pnnx_output_0");
+
+  // 推理
+  const std::vector<std::shared_ptr<Tensor<float>>> outputs = graph.Forward(inputs, true);
+  const uint32_t batch_size = 1;
+  // softmax
+  std::vector<std::shared_ptr<Tensor<float>>> outputs_softmax(batch_size);
+  SoftmaxLayer softmax_layer;
+  softmax_layer.Forward(outputs, outputs_softmax);
+  assert(outputs_softmax.size() == batch_size);
+
+  for (int i = 0; i < outputs_softmax.size(); ++i) {
+    const std::shared_ptr<Tensor<float>>& output_tensor = outputs_softmax.at(i);
+    assert(output_tensor->size() == 1 * 1000);
+    // 找到类别概率最大的种类
+    float max_prob = -1;
+    int max_index = -1;
+    for (int j = 0; j < output_tensor->size(); ++j) {
+      float prob = output_tensor->index(j);
+      if (max_prob <= prob) {
+        max_prob = prob;
+        max_index = j;
+      }
+    }
+    printf("class with max prob is %f index %d\n", max_prob, max_index);
   }
 }
  
