@@ -35,5 +35,6 @@ target_include_directories(TinyTensor PUBLIC ${Armadillo_INCLUDE_DIR})
 add_compile_definitions(SSE_MATHFUN_WITH_CODE USE_SSE_AUTO)
 enable_testing()
 add_subdirectory(test)
+add_subdirectory(bench)
 
 set(CMAKE_BUILD_TYPE Debug)
