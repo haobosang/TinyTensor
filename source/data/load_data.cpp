@@ -10,7 +10,7 @@
 
 
 namespace TinyTensor {
-arma::fmat CSVDataLoader::LoadData(const std::string &file_path, const char split_char) {
+  arma::fmat CSVDataLoader::LoadData(const std::string &file_path, const char split_char) {
   arma::fmat data;
   if (file_path.empty()) {
     LOG(ERROR) << "CSV file path is empty: " << file_path;
@@ -57,9 +57,9 @@ arma::fmat CSVDataLoader::LoadData(const std::string &file_path, const char spli
     CHECK(row <= rows) << "There are excessive elements on the row";
   }
   return data;
-}
+  }
 
-std::pair<size_t, size_t> CSVDataLoader::GetMatrixSize(std::ifstream &file, char split_char) {
+  std::pair<size_t, size_t> CSVDataLoader::GetMatrixSize(std::ifstream &file, char split_char) {
   bool load_ok = file.good();
   file.clear();
   size_t fn_rows = 0;
@@ -94,5 +94,5 @@ std::pair<size_t, size_t> CSVDataLoader::GetMatrixSize(std::ifstream &file, char
   file.clear();
   file.seekg(start_pos);
   return {fn_rows, fn_cols};
-}
+  }
 }

@@ -152,11 +152,12 @@ public:
     float* raw_ptr(uint32_t offset);
 
     void Reshape(const std::vector<uint32_t>& shapes, bool row_major = false);
-  /**
-   * 返回第index个矩阵的起始地址
-   * @param index 第index个矩阵
-   * @return 第index个矩阵的起始地址
-   */
+
+    /**
+     * 返回第index个矩阵的起始地址
+     * @param index 第index个矩阵
+     * @return 第index个矩阵的起始地址
+     */
     float* matrix_raw_ptr(uint32_t index);
 
 private:
@@ -225,8 +226,8 @@ std::shared_ptr<Tensor<float>> TensorCreate(uint32_t channels, uint32_t rows, ui
  */
 std::shared_ptr<Tensor<float>> TensorCreate(const std::vector<uint32_t> &shapes);
 
-std::shared_ptr<Tensor<float>> TensorClone(
-    std::shared_ptr<Tensor<float>> tensor);
+std::shared_ptr<Tensor<float>> TensorClone(std::shared_ptr<Tensor<float>> tensor);
+
 
 } // namespace TinyTensor
 

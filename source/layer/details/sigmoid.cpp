@@ -38,8 +38,10 @@ InferStatus SigmoidLayer::Forward(const std::vector<std::shared_ptr<Tensor<float
             return InferStatus::kInferFailedInputEmpty;
         }
         /* 判断 outputs 和 inputs 的大小是否相等*/
-        if (output_data != nullptr && !output_data->empty()) {
-            if (output_data->shapes() != input_data->shapes()) {
+        if (output_data != nullptr && !output_data->empty()) 
+        {
+            if (output_data->shapes() != input_data->shapes()) 
+            {
                 LOG(ERROR) << "The input and output size is not adapting";
                 return InferStatus::kInferFailedInputOutSizeAdaptingError;
             }
@@ -48,7 +50,8 @@ InferStatus SigmoidLayer::Forward(const std::vector<std::shared_ptr<Tensor<float
 
 /* OMP 并行 */
 #pragma omp parallel for num_threads(batch_size)
-    for (uint32_t i = 0; i < batch_size; ++i) {
+    for (uint32_t i = 0; i < batch_size; ++i) 
+    {
         const std::shared_ptr<Tensor<float>> &input_batch = inputs.at(i);
         CHECK(input_batch == nullptr || !input_batch->empty()) << "The input feature map of sigmoid layer is empty";
 
@@ -62,7 +65,8 @@ InferStatus SigmoidLayer::Forward(const std::vector<std::shared_ptr<Tensor<float
         CHECK(output_batch->shapes() == input_batch->shapes()) << "The output size of sigmoid is error";
         output_batch->set_data(input_batch->data());
         output_batch->data().transform(
-            [&](float value) {
+            [&](float value) 
+            {
                 return 1 / (1 + std::exp(-value));
             }
         );  // Tensor.data() 返回的是 arma::fcube 类型的数据. transform 数据变换需要传入变换函数

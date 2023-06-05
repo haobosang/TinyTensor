@@ -17,13 +17,7 @@ ConvolutionLayer::ConvolutionLayer(uint32_t output_channel,
                                    uint32_t stride_w,
                                    uint32_t groups, 
                                    bool use_bias)
-    : ParamLayer("Convolution"),
-        use_bias_(use_bias),
-        groups_(groups),
-        padding_h_(padding_h),
-        padding_w_(padding_w),
-        stride_h_(stride_h),
-        stride_w_(stride_w)
+    : ParamLayer("Convolution"), use_bias_(use_bias), groups_(groups), padding_h_(padding_h), padding_w_(padding_w), stride_h_(stride_h), stride_w_(stride_w)
 {
     if (groups != 1)
     {
@@ -135,8 +129,7 @@ InferStatus ConvolutionLayer::Forward(const std::vector<std::shared_ptr<Tensor<f
         CHECK(col_len > 0) << "The col len of the input matrix is less than zero";
 
         uint32_t input_c_group = input_c / groups_;
-        CHECK(input_c_group == kernel_c)
-            << "The channel of the kernel and input feature do not equal";
+        CHECK(input_c_group == kernel_c) << "The channel of the kernel and input feature do not equal";
 
         for (uint32_t g = 0; g < groups_; ++g)
         {
@@ -184,11 +177,7 @@ InferStatus ConvolutionLayer::Forward(const std::vector<std::shared_ptr<Tensor<f
                 outputs.at(i) = output_tensor;
             }
 
-            CHECK(
-                output_tensor->rows() == output_h 
-                && output_tensor->cols() == output_w 
-                && output_tensor->channels() == kernel_count
-            ) << "The output size of convolution is error";
+            CHECK(output_tensor->rows() == output_h && output_tensor->cols() == output_w && output_tensor->channels() == kernel_count) << "The output size of convolution is error";
 
 #pragma omp parallel for schedule(dynamic)
             for (uint32_t k = 0; k < kernel_count_group; ++k)
@@ -369,8 +358,7 @@ ParseParameterAttrStatus ConvolutionLayer::GetInstance(const std::shared_ptr<Run
     }
 
     // kernel的方向是倒置的
-    conv_layer = std::make_shared<ConvolutionLayer>
-    (
+    conv_layer = std::make_shared<ConvolutionLayer>(
         out_channel->value, 
         in_channel->value, 
         kernels.at(0), 

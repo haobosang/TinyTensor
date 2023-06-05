@@ -20,8 +20,7 @@ public:
      * @param inputs 输入一个 Tensor
      * @param outputs 输出的 Tensor
      */
-    InferStatus Forward
-    (
+    InferStatus Forward(
         const std::vector<std::shared_ptr<Tensor<float>>> &inputs,
         std::vector<std::shared_ptr<Tensor<float>>> &outputs
     ) override;
@@ -31,8 +30,7 @@ public:
      * @param op 计算图中的计算节点
      * @param flatten_layer 输入 flatten_layer 层
      */
-    static ParseParameterAttrStatus GetInstance
-    (
+    static ParseParameterAttrStatus GetInstance(
         const std::shared_ptr<RuntimeOperator> &op,
         std::shared_ptr<Layer> &flatten_layer
     );

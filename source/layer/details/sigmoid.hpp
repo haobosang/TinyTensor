@@ -13,6 +13,7 @@
 
 namespace TinyTensor
 {
+
 /**
  * 公共继承自 Layer 虚基类
 */
@@ -22,14 +23,12 @@ public:
     SigmoidLayer(): Layer("Sigmoid") { }
     ~SigmoidLayer() = default;
 
-    InferStatus Forward
-    (
+    InferStatus Forward(
         const std::vector<std::shared_ptr<Tensor<float>>> &inputs, 
         std::vector<std::shared_ptr<Tensor<float>>> &outputs
     ) override;
 
-    static ParseParameterAttrStatus GetInstance
-    (
+    static ParseParameterAttrStatus GetInstance(
         const std::shared_ptr<RuntimeOperator> &op, 
         std::shared_ptr<Layer> &sigmoid_layer
     );

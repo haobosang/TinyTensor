@@ -8,12 +8,10 @@ namespace TinyTensor
     {
     }
 
-    InferStatus ExpressionLayer::Forward
-    (
+    InferStatus ExpressionLayer::Forward(
         const std::vector<std::shared_ptr<Tensor<float>>> &inputs,
         std::vector<std::shared_ptr<Tensor<float>>> &outputs
-    ) 
-    {
+    ) {
         if (inputs.empty())
         {
             LOG(ERROR) << "The input feature map of expression layer is empty";
@@ -117,8 +115,7 @@ namespace TinyTensor
         return InferStatus::kInferSuccess;
     }
 
-    ParseParameterAttrStatus ExpressionLayer::GetInstance
-    (
+    ParseParameterAttrStatus ExpressionLayer::GetInstance(
         const std::shared_ptr<RuntimeOperator> &op,
         std::shared_ptr<Layer> &expression_layer
     )

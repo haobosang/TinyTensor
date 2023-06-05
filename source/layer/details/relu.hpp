@@ -11,25 +11,23 @@
 #include "layer/abstract/layer.hpp"
 namespace TinyTensor
 {
-    class ReluLayer : public Layer
-    {
-    public:
-        ReluLayer() : Layer("Relu")
-        {
-        }
 
-        InferStatus Forward
-        (
-            const std::vector<std::shared_ptr<Tensor<float>>> &inputs,
-            std::vector<std::shared_ptr<Tensor<float>>> &outputs
-        ) override;
+class ReluLayer : public Layer
+{
+public:
+    ReluLayer() : Layer("Relu") { }
 
-        static ParseParameterAttrStatus GetInstance
-        (
-            const std::shared_ptr<RuntimeOperator> &op,
-            std::shared_ptr<Layer> &relu_layer
-        );
-    };
+    InferStatus Forward(
+        const std::vector<std::shared_ptr<Tensor<float>>> &inputs,
+        std::vector<std::shared_ptr<Tensor<float>>> &outputs
+    ) override;
+
+    static ParseParameterAttrStatus GetInstance(
+        const std::shared_ptr<RuntimeOperator> &op,
+        std::shared_ptr<Layer> &relu_layer
+    );
+};
+
 } // namespace TinyTensor
 
 #endif // TINYTENSOR_INCLUDE_RELU_LAYER_HPP_
