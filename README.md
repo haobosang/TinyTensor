@@ -70,5 +70,22 @@ sudo make install
 * Conv
 * MaxPooling
 
+## Performance Testing
+### Test Equipment
+
+Intel(R) Xeon(R) W-2223 CPU @ 3.60GHz
+
+
+### Compilation Environment
+
+gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
+
+### Performance Results
+
+| **input size**         | **model**        | **Computing Device**              | **time**           |
+|------------------------| ---------------- | ------------------------- |------------------|
+| 224×224 batch = 8      | ResNet18         | CPU(armadillo + openblas) | 59.75ms / image  |
+| 224×224 batch =16      | ResNet18         | CPU(armadillo + openblas) | 28.12ms / image  |
+
 ## Acknowledgement
 caffe
