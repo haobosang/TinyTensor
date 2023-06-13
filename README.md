@@ -82,10 +82,10 @@ gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0
 
 ### Performance Results
 
-| **input size**         | **model**        | **Computing Device**              | **time**           |
+| **Input size**         | **Model**        | **Computing Device**              | **Time**           |
 |------------------------| ---------------- | ------------------------- |------------------|
-| 224×224 batch = 8      | ResNet18         | CPU(armadillo + openblas) | 59.75ms / image  |
-| 224×224 batch =16      | ResNet18         | CPU(armadillo + openblas) | 28.12ms / image  |
+| 224×224 batch = 8      | ResNet18         | CPU(armadillo) | 55ms / image  |
+| 224×224 batch =16      | ResNet18         | CPU(armadillo) | 28.5ms / image  |
 
 ## Acknowledgement
 caffe
