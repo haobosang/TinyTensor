@@ -1,7 +1,6 @@
 #include <benchmark/benchmark.h>
 #include "runtime/runtime_ir.hpp"
 using namespace TinyTensor;
-const static int kIterationNum = 5;
 
 static void BM_Resnet18_Batch8_224x224(benchmark::State& state) {
   //state.iterations(IterationNum);
@@ -47,5 +46,6 @@ static void BM_Resnet18_Batch16_224x224(benchmark::State& state) {
   }
 }
 
-BENCHMARK(BM_Resnet18_Batch8_224x224)->Unit(benchmark::kMillisecond);
-BENCHMARK(BM_Resnet18_Batch16_224x224)->Unit(benchmark::kMillisecond);
+
+BENCHMARK(BM_Resnet18_Batch8_224x224)->Iterations(10)->Unit(benchmark::kMillisecond);
+BENCHMARK(BM_Resnet18_Batch16_224x224)->Iterations(10)->Unit(benchmark::kMillisecond);
