@@ -11,6 +11,7 @@ find_package(Armadillo REQUIRED)
 find_package(glog REQUIRED)
 find_package(BLAS REQUIRED)
 find_package(LAPACK REQUIRED)
+#find_package(OpenBLAS REQUIRED)
 
 aux_source_directory(./source/data DIR_DATA)
 aux_source_directory(./source/runtime DIR_PARSER)
